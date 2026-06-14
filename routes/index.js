@@ -6,6 +6,7 @@ const Bulletin    = require('../models/Bulletin');
 const News        = require('../models/News');
 const Institution = require('../models/Institution');
 const Settings    = require('../models/Settings');
+const Collaborator = require('../models/Collaborator');
 
 // Helper — always get settings (creates default if none exist)
 async function getSettings() {
@@ -99,14 +100,23 @@ router.get('/campaigns', async (req, res) => {
 
 // Join
 router.get('/join', async (req, res) => {
-  const settings = await getSettings();
-  res.render('join', { title: 'Join Us — NiMSA South East Region', settings });
+  const [settings, institutions] = await Promise.all([getSettings(), Institution.find().sort({ order: 1 })]);
+  res.render('join', { title: 'Join Us — NiMSA South East Region', institutions, settings });
 });
 
 // Contact
 router.get('/contact', async (req, res) => {
   const settings = await getSettings();
   res.render('contact', { title: 'Contact — NiMSA South East Region', settings });
+});
+
+// Acknowledgement
+router.get('/acknowledgement', async (req, res) => {
+  const [settings, collaborators] = await Promise.all([
+    getSettings(),
+    Collaborator.find().sort({ order: 1, createdAt: 1 })
+  ]);
+  res.render('acknowledgement', { title: 'Acknowledgement — NiMSA South East Region', collaborators, settings });
 });
 
 module.exports = router;

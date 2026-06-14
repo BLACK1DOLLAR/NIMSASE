@@ -1,0 +1,160 @@
+<%- include('layout-top') %>
+
+<div class="admin-header">
+  <h1>Acknowledgement</h1>
+  <p>Manage the ICT Director (the lead) and the collaborators shown on the public Acknowledgement page.</p>
+</div>
+
+<!-- ICT DIRECTOR -->
+<div class="admin-card">
+  <div class="admin-card-header"><h3>👑 ICT Director (Lead)</h3></div>
+  <div class="admin-card-body">
+    <form action="/admin/acknowledgement/director" method="POST" enctype="multipart/form-data">
+      <div class="admin-form-grid">
+
+        <!-- Photo -->
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Profile Picture</label>
+          <% if (settings.ictDirectorPhoto) { %>
+          <div style="margin-bottom:0.7rem;display:flex;align-items:center;gap:1rem;">
+            <img src="<%= settings.ictDirectorPhoto %>" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);">
+            <span style="font-size:0.78rem;color:var(--text-muted);">Current photo — upload a new one below to replace it.</span>
+          </div>
+          <% } %>
+          <div class="drop-zone">
+            <div class="drop-zone-icon">👤</div>
+            <div class="drop-zone-text">Click or drag the Director's photo</div>
+            <div class="drop-zone-sub">JPG, PNG, WebP — square image works best</div>
+            <input type="file" name="photoFile" accept="image/*">
+            <div class="preview-grid"></div>
+          </div>
+          <input type="url" name="ictDirectorPhoto" class="form-control" style="margin-top:0.5rem;" value="<%= settings.ictDirectorPhoto || '' %>" placeholder="Or paste image URL">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Director's Name *</label>
+          <input type="text" name="ictDirectorName" class="form-control" value="<%= settings.ictDirectorName || '' %>" placeholder="e.g. Samuel Okonkwo" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year / Tenure</label>
+          <input type="text" name="ictDirectorYear" class="form-control" value="<%= settings.ictDirectorYear || '' %>" placeholder="e.g. 2026/2027">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Bio</label>
+          <textarea name="ictDirectorBio" class="form-control" rows="3" placeholder="A short biography of the ICT Director..."><%= settings.ictDirectorBio || '' %></textarea>
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Section Intro (optional)</label>
+          <input type="text" name="ackIntro" class="form-control" value="<%= settings.ackIntro || '' %>" placeholder="Optional intro paragraph for the Acknowledgement page">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">Save Director Details</button>
+    </form>
+  </div>
+</div>
+
+<!-- ADD COLLABORATOR -->
+<div class="admin-card">
+  <div class="admin-card-header"><h3>Add New Collaborator</h3></div>
+  <div class="admin-card-body">
+    <form action="/admin/acknowledgement/collaborators" method="POST" enctype="multipart/form-data">
+      <div class="admin-form-grid">
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Profile Picture</label>
+          <div class="drop-zone">
+            <div class="drop-zone-icon">📷</div>
+            <div class="drop-zone-text">Click or drag a photo</div>
+            <div class="drop-zone-sub">JPG, PNG, WebP — square image works best</div>
+            <input type="file" name="photoFile" accept="image/*">
+            <div class="preview-grid"></div>
+          </div>
+          <input type="url" name="photo" class="form-control" style="margin-top:0.5rem;" placeholder="Or paste image URL">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Name *</label>
+          <input type="text" name="name" class="form-control" placeholder="e.g. Jane Doe" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <input type="text" name="role" class="form-control" placeholder="e.g. Web Developer">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Bio</label>
+          <textarea name="bio" class="form-control" rows="2" placeholder="A short bio..."></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">+ Add Collaborator</button>
+    </form>
+  </div>
+</div>
+
+<!-- EXISTING COLLABORATORS -->
+<div class="admin-card">
+  <div class="admin-card-header">
+    <h3>All Collaborators (<%= collaborators.length %>)</h3>
+  </div>
+  <div class="admin-card-body" style="padding:0;">
+    <% collaborators.forEach((c, i) => { %>
+    <div style="border-bottom:1px solid var(--border);background:<%= i%2===0?'white':'var(--green-pale)' %>;">
+      <!-- Main row -->
+      <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem;padding:1rem 1.2rem;">
+        <% if (c.photo) { %>
+          <img src="<%= c.photo %>" alt="<%= c.name %>" style="width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);flex-shrink:0;">
+        <% } else { %>
+          <div style="width:48px;height:48px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-weight:700;color:var(--green-primary);flex-shrink:0;"><%= c.name.charAt(0) %></div>
+        <% } %>
+        <div style="flex:1;min-width:160px;">
+          <div style="font-weight:700;font-size:0.9rem;color:var(--green-deep);"><%= c.name %></div>
+          <% if (c.role) { %><div style="font-size:0.74rem;color:var(--gold-dark);font-weight:600;"><%= c.role %></div><% } %>
+          <% if (c.bio) { %><div style="font-size:0.74rem;color:var(--text-muted);margin-top:0.2rem;"><%= c.bio %></div><% } %>
+        </div>
+        <button class="btn btn-sm btn-outline-gold" onclick="toggleEdit('<%= c._id %>')">Edit</button>
+        <form action="/admin/acknowledgement/collaborators/<%= c._id %>/delete" method="POST" style="display:inline;">
+          <button type="submit" class="btn btn-sm btn-danger" data-confirm="Remove <%= c.name %> from collaborators?">Remove</button>
+        </form>
+      </div>
+
+      <!-- Inline edit form -->
+      <div id="edit-<%= c._id %>" style="display:none;padding:1rem 1.2rem;background:var(--gold-subtle);border-top:1px solid var(--border-gold);">
+        <form action="/admin/acknowledgement/collaborators/<%= c._id %>/edit" method="POST" enctype="multipart/form-data">
+          <div class="admin-form-grid" style="margin-bottom:0.8rem;">
+            <div class="form-group" style="margin-bottom:0.6rem;">
+              <label class="form-label">Name</label>
+              <input type="text" name="name" class="form-control" value="<%= c.name %>" required>
+            </div>
+            <div class="form-group" style="margin-bottom:0.6rem;">
+              <label class="form-label">Role</label>
+              <input type="text" name="role" class="form-control" value="<%= c.role %>">
+            </div>
+            <div class="form-group" style="margin-bottom:0.6rem;grid-column:1/-1;">
+              <label class="form-label">Bio</label>
+              <textarea name="bio" class="form-control" rows="2"><%= c.bio %></textarea>
+            </div>
+            <div class="form-group" style="margin-bottom:0.6rem;grid-column:1/-1;">
+              <label class="form-label">Replace Photo</label>
+              <input type="file" name="photoFile" accept="image/*" class="form-control">
+              <input type="url" name="photo" class="form-control" style="margin-top:0.4rem;" value="<%= c.photo || '' %>" placeholder="Or paste image URL">
+            </div>
+          </div>
+          <div style="display:flex;gap:0.5rem;">
+            <button type="submit" class="btn btn-gold btn-sm">Save Changes</button>
+            <button type="button" class="btn btn-sm btn-outline-gold" onclick="toggleEdit('<%= c._id %>')">Cancel</button>
+          </div>
+        </form>
+      </div>
+    </div>
+    <% }) %>
+    <% if (!collaborators.length) { %>
+    <div style="padding:2rem;text-align:center;color:var(--text-muted);">No collaborators yet. Add one above.</div>
+    <% } %>
+  </div>
+</div>
+
+<script>
+function toggleEdit(id) {
+  const el = document.getElementById('edit-' + id);
+  el.style.display = el.style.display === 'none' ? 'block' : 'none';
+}
+</script>
+
+<%- include('layout-bottom') %>
