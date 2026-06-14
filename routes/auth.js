@@ -3,6 +3,7 @@ const router   = express.Router();
 const bcrypt   = require('bcryptjs');
 const User     = require('../models/User');
 const Settings = require('../models/Settings');
+const Institution = require('../models/Institution');
 
 // GET /auth/login
 router.get('/login', (req, res) => {
@@ -46,8 +47,11 @@ router.post('/login', async (req, res) => {
 // GET /auth/register
 router.get('/register', async (req, res) => {
   if (req.session.user) return res.redirect('/');
-  const settings = await Settings.findOne() || {};
-  res.render('register', { title: 'Register — NiMSA SE', settings });
+  const [settings, institutions] = await Promise.all([
+    Settings.findOne(),
+    Institution.find().sort({ order: 1 })
+  ]);
+  res.render('register', { title: 'Register — NiMSA SE', settings: settings || {}, institutions });
 });
 
 // POST /auth/register

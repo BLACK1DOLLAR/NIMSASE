@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %></title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<%- include('partials/nav') %>
+
+<div class="page-hero">
+  <div class="container">
+    <div class="eyebrow">With Gratitude</div>
+    <h1>Acknowledgement</h1>
+    <p>Recognising the ICT Directorate and the dedicated collaborators whose work brought the NiMSA South East Region platform to life.</p>
+  </div>
+</div>
+
+<!-- ICT DIRECTOR — LEAD -->
+<section class="section">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">ICT Directorate</div>
+      <h2>Led By</h2>
+      <% if (settings.ackIntro) { %>
+      <p><%= settings.ackIntro %></p>
+      <% } else { %>
+      <p>The vision, design, and technical leadership behind this platform.</p>
+      <% } %>
+      <div class="gold-line"></div>
+    </div>
+
+    <% if (settings.ictDirectorName) { %>
+    <div class="about-grid fade-in" style="align-items:center;">
+      <div class="about-img-block" style="display:flex;align-items:center;justify-content:center;padding:2.5rem;">
+        <div style="text-align:center;color:white;">
+          <% if (settings.ictDirectorPhoto) { %>
+            <img src="<%= settings.ictDirectorPhoto %>" alt="<%= settings.ictDirectorName %>"
+              style="width:170px;height:170px;object-fit:cover;border-radius:50%;border:3px solid var(--gold);margin:0 auto 1.2rem;display:block;">
+          <% } else { %>
+            <div style="width:170px;height:170px;border-radius:50%;border:3px solid var(--gold);background:var(--green-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:3.4rem;font-weight:600;color:var(--green-primary);margin:0 auto 1.2rem;">
+              <%= settings.ictDirectorName.charAt(0) %>
+            </div>
+          <% } %>
+          <div style="font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:var(--gold);"><%= settings.ictDirectorName %></div>
+          <div style="font-size:0.82rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.3rem;">Director of ICT</div>
+          <% if (settings.ictDirectorYear) { %>
+          <div style="margin-top:0.7rem;"><span class="badge badge-gold" style="font-size:0.7rem;">📅 <%= settings.ictDirectorYear %></span></div>
+          <% } %>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">The Lead</div>
+        <h2 style="margin-bottom:0.4rem;"><%= settings.ictDirectorName %></h2>
+        <div style="color:var(--gold-dark);font-weight:600;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:1.2rem;">
+          Director of ICT<% if (settings.ictDirectorYear) { %> · <%= settings.ictDirectorYear %><% } %>
+        </div>
+        <% if (settings.ictDirectorBio) { %>
+          <p style="margin-bottom:1rem;color:var(--text-body);"><%= settings.ictDirectorBio %></p>
+        <% } else { %>
+          <p style="margin-bottom:1rem;color:var(--text-muted);">Leading the digital transformation of NiMSA South East Region.</p>
+        <% } %>
+      </div>
+    </div>
+    <% } else { %>
+    <!-- Placeholder ICT Director -->
+    <div class="about-grid fade-in" style="align-items:center;">
+      <div class="about-img-block" style="display:flex;align-items:center;justify-content:center;padding:2.5rem;">
+        <div style="text-align:center;color:white;">
+          <div style="width:170px;height:170px;border-radius:50%;border:3px dashed var(--gold);background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;">
+            <svg width="70" height="70" fill="rgba(201,168,76,0.6)" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+          </div>
+          <div style="font-family:var(--font-display);font-size:1.35rem;font-weight:700;color:var(--gold);">Director's Name</div>
+          <div style="font-size:0.82rem;color:rgba(255,255,255,0.7);text-transform:uppercase;letter-spacing:0.1em;margin-top:0.3rem;">Director of ICT</div>
+          <div style="margin-top:0.7rem;"><span class="badge badge-gold" style="font-size:0.7rem;">📅 2026/2027</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="eyebrow">The Lead</div>
+        <h2 style="margin-bottom:0.4rem;color:var(--text-muted);">Director's Name</h2>
+        <div style="color:var(--gold-dark);font-weight:600;font-size:0.82rem;text-transform:uppercase;letter-spacing:0.05em;margin-bottom:1.2rem;">
+          Director of ICT · 2026/2027
+        </div>
+        <p style="margin-bottom:1rem;color:var(--text-muted);font-style:italic;">The ICT Director's bio will appear here. This is a placeholder until the details are added.</p>
+        <% if (isAdmin) { %>
+        <a href="/admin/acknowledgement" class="btn btn-gold btn-sm">+ Add Director Details</a>
+        <% } %>
+      </div>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<!-- COLLABORATORS -->
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">The Team</div>
+      <h2>Collaborators</h2>
+      <p>The talented individuals who contributed their time and skills to this project.</p>
+      <div class="gold-line"></div>
+    </div>
+
+    <% if (collaborators && collaborators.length) { %>
+    <div class="grid-3">
+      <% collaborators.forEach((c, i) => { %>
+      <div class="exec-card-wrap fade-in" style="transition-delay:<%= i*0.06 %>s">
+        <div class="exec-card">
+          <div style="display:flex;justify-content:center;margin:1.8rem auto 1.1rem;">
+            <% if (c.photo) { %>
+              <img src="<%= c.photo %>" alt="<%= c.name %>"
+                style="width:90px;height:90px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;flex-shrink:0;">
+            <% } else { %>
+              <div style="width:90px;height:90px;border-radius:50%;border:2px solid var(--gold);background:var(--green-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:var(--green-primary);flex-shrink:0;">
+                <%= c.name.charAt(0) %>
+              </div>
+            <% } %>
+          </div>
+          <div class="exec-name"><%= c.name %></div>
+          <% if (c.role) { %>
+          <div class="exec-position">
+            <span style="color:var(--gold-dark);font-weight:600;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.04em;"><%= c.role %></span>
+          </div>
+          <% } %>
+          <% if (c.bio) { %><p class="exec-bio"><%= c.bio %></p><% } %>
+        </div>
+      </div>
+      <% }) %>
+    </div>
+    <% } else { %>
+    <!-- Placeholder collaborator cards -->
+    <div class="grid-3">
+      <% for (let i = 0; i < 3; i++) { %>
+      <div class="exec-card-wrap fade-in" style="transition-delay:<%= i*0.06 %>s">
+        <div class="exec-card">
+          <div style="display:flex;justify-content:center;margin:1.8rem auto 1.1rem;">
+            <div style="width:90px;height:90px;border-radius:50%;border:2px dashed var(--gold);background:var(--green-pale);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="42" height="42" fill="rgba(201,168,76,0.55)" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+            </div>
+          </div>
+          <div class="exec-name" style="color:var(--text-muted);">Collaborator Name</div>
+          <div class="exec-position">
+            <span style="color:var(--gold-dark);font-weight:600;font-size:0.76rem;text-transform:uppercase;letter-spacing:0.04em;">Role / Contribution</span>
+          </div>
+          <p class="exec-bio" style="font-style:italic;">A short bio of this collaborator will appear here once added.</p>
+        </div>
+      </div>
+      <% } %>
+    </div>
+    <% if (isAdmin) { %>
+    <div style="text-align:center;margin-top:1.5rem;">
+      <a href="/admin/acknowledgement" class="btn btn-gold btn-sm">+ Add Collaborators</a>
+    </div>
+    <% } %>
+    <% } %>
+
+    <% if (isAdmin) { %>
+    <div class="info-box" style="margin-top:3rem;">
+      <p>🔧 <strong>Admin:</strong> <a href="/admin/acknowledgement">Manage acknowledgement</a> — update the ICT Director and add, edit or remove collaborators.</p>
+    </div>
+    <% } %>
+  </div>
+</section>
+
+<%- include('partials/footer') %>
+<script src="/js/main.js"></script>
+</body>
+</html>

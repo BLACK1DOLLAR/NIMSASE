@@ -17,6 +17,13 @@ const settingsSchema = new mongoose.Schema({
   heroImage:        { type: String, default: '' },
   watermarkImage:   { type: String, default: '' },
   watermarkText:    { type: String, default: '' },
+
+  // ── Acknowledgement section — ICT Director (lead) ──
+  ictDirectorName:  { type: String, default: '' },
+  ictDirectorYear:  { type: String, default: '' },   // e.g. "2026/2027"
+  ictDirectorBio:   { type: String, default: '' },
+  ictDirectorPhoto: { type: String, default: '' },
+  ackIntro:         { type: String, default: '' },   // optional intro paragraph
 }, { timestamps: true });
 
 module.exports = mongoose.model('Settings', settingsSchema);

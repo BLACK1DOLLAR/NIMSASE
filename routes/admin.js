@@ -2,7 +2,7 @@ const express     = require('express');
 const router      = express.Router();
 const bcrypt      = require('bcryptjs');
 const { requireAdmin } = require('../middleware/auth');
-const { cloudinary, uploadExec, uploadEvent, uploadBulletin, uploadNews, uploadGallery, uploadSite } = require('../middleware/upload');
+const { cloudinary, uploadExec, uploadEvent, uploadBulletin, uploadNews, uploadGallery, uploadSite, uploadAck } = require('../middleware/upload');
 
 const User        = require('../models/User');
 const Executive   = require('../models/Executive');
@@ -11,6 +11,7 @@ const Bulletin    = require('../models/Bulletin');
 const News        = require('../models/News');
 const Institution = require('../models/Institution');
 const Settings    = require('../models/Settings');
+const Collaborator = require('../models/Collaborator');
 
 // Protect all admin routes
 router.use(requireAdmin);
@@ -482,6 +483,98 @@ router.post('/settings', uploadSite.fields([
     req.flash('error', 'Failed to save settings.');
   }
   res.redirect('/admin/settings');
+});
+
+/* ════════════════════════════════
+   ACKNOWLEDGEMENT — ICT Director + Collaborators
+════════════════════════════════ */
+router.get('/acknowledgement', async (req, res) => {
+  const [settings, collaborators] = await Promise.all([
+    getSettings(),
+    Collaborator.find().sort({ order: 1, createdAt: 1 })
+  ]);
+  res.render('admin/acknowledgement', { title: 'Manage Acknowledgement — Admin', collaborators, settings });
+});
+
+// Update ICT Director (the lead)
+router.post('/acknowledgement/director', uploadAck.single('photoFile'), async (req, res) => {
+  try {
+    let s = await Settings.findOne();
+    if (!s) s = new Settings();
+
+    s.ictDirectorName = req.body.ictDirectorName || '';
+    s.ictDirectorYear = req.body.ictDirectorYear || '';
+    s.ictDirectorBio  = req.body.ictDirectorBio  || '';
+    s.ackIntro        = req.body.ackIntro        || '';
+
+    if (req.file) {
+      await deleteCloudinaryFile(s.ictDirectorPhoto);
+      s.ictDirectorPhoto = req.file.path;
+    } else if (req.body.ictDirectorPhoto !== undefined) {
+      s.ictDirectorPhoto = req.body.ictDirectorPhoto;
+    }
+
+    await s.save();
+    req.flash('success', 'ICT Director details saved.');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Failed to save ICT Director details.');
+  }
+  res.redirect('/admin/acknowledgement');
+});
+
+// Add collaborator
+router.post('/acknowledgement/collaborators', uploadAck.single('photoFile'), async (req, res) => {
+  try {
+    const { name, role, bio } = req.body;
+    const count = await Collaborator.countDocuments();
+    const photo = req.file ? req.file.path : (req.body.photo || '');
+    await Collaborator.create({ name, role, bio, photo, order: count + 1 });
+    req.flash('success', `${name} added as a collaborator.`);
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Failed to add collaborator.');
+  }
+  res.redirect('/admin/acknowledgement');
+});
+
+// Edit collaborator
+router.post('/acknowledgement/collaborators/:id/edit', uploadAck.single('photoFile'), async (req, res) => {
+  try {
+    const collab = await Collaborator.findById(req.params.id);
+    if (!collab) { req.flash('error', 'Collaborator not found.'); return res.redirect('/admin/acknowledgement'); }
+    let photo = collab.photo;
+    if (req.file) {
+      await deleteCloudinaryFile(collab.photo);
+      photo = req.file.path;
+    } else if (req.body.photo !== undefined && req.body.photo !== '') {
+      photo = req.body.photo;
+    }
+    await Collaborator.findByIdAndUpdate(req.params.id, {
+      name: req.body.name,
+      role: req.body.role,
+      bio:  req.body.bio,
+      photo
+    });
+    req.flash('success', 'Collaborator updated.');
+  } catch (err) {
+    console.error(err);
+    req.flash('error', 'Update failed.');
+  }
+  res.redirect('/admin/acknowledgement');
+});
+
+// Delete collaborator
+router.post('/acknowledgement/collaborators/:id/delete', async (req, res) => {
+  try {
+    const collab = await Collaborator.findById(req.params.id);
+    if (collab) {
+      await deleteCloudinaryFile(collab.photo);
+      await collab.deleteOne();
+    }
+    req.flash('success', 'Collaborator removed.');
+  } catch { req.flash('error', 'Delete failed.'); }
+  res.redirect('/admin/acknowledgement');
 });
 
 module.exports = router;

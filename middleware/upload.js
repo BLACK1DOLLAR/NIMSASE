@@ -47,4 +47,5 @@ module.exports = {
   uploadNews:     multer({ storage: makeStorage('news'),             fileFilter, limits }),
   uploadGallery:  multer({ storage: makeStorage('gallery'),          fileFilter, limits }),
   uploadSite:     multer({ storage: makeStorage('site'),             fileFilter, limits }),
+  uploadAck:      multer({ storage: makeStorage('acknowledgement'),  fileFilter, limits }),
 };
