@@ -35,8 +35,8 @@ const fileFilter = (req, file, cb) => {
   cb(new Error('Only image files (jpg, png, webp) or PDF files are allowed'));
 };
 
-const limits      = { fileSize:  5 * 1024 * 1024 }; // 5MB for images
-const limitsLarge = { fileSize: 20 * 1024 * 1024 }; // 20MB for PDFs/bulletins
+const limits      = { fileSize: 12 * 1024 * 1024 }; // 12MB for images (phone photos are large)
+const limitsLarge = { fileSize: 25 * 1024 * 1024 }; // 25MB for PDFs/bulletins
 
 module.exports = {
   cloudinary, // export so admin routes can delete files
