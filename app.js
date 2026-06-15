@@ -64,6 +64,37 @@ app.use((req, res) => {
   res.status(404).render('404', { title: '404 — Page Not Found' });
 });
 
+// ── Global error handler — catches errors from ALL routes & middleware
+//    (including multer/Cloudinary upload failures, which run before route try/catch)
+app.use((err, req, res, next) => {
+  console.error('💥 Error:', err.message);
+
+  // Turn common upload errors into a friendly, specific message
+  let message = 'Something went wrong. Please try again.';
+  if (err.code === 'LIMIT_FILE_SIZE') {
+    message = 'That file is too large. Please choose an image under 12MB (try a smaller photo).';
+  } else if (err.code === 'LIMIT_UNEXPECTED_FILE') {
+    message = 'Unexpected file field. Please try uploading again.';
+  } else if (/Only image files/i.test(err.message || '')) {
+    message = err.message;
+  }
+
+  // For admin actions, flash the message and send the user back where they came from
+  if (req.session && req.session.user && req.method === 'POST') {
+    req.flash('error', message);
+    const back = req.get('Referer')
+      || (req.originalUrl.startsWith('/admin/acknowledgement') ? '/admin/acknowledgement' : '/admin');
+    return res.redirect(back);
+  }
+
+  // Otherwise render a friendly 500 page (fall back to plain text if the view fails)
+  res.status(500);
+  res.render('500', { title: 'Something went wrong', message }, (renderErr, html) => {
+    if (renderErr) return res.send(message);
+    res.send(html);
+  });
+});
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🏥 NiMSA SE Website running at http://localhost:${PORT}`);
