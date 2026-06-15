@@ -26,7 +26,7 @@
         <% if (error.length) { %><div class="alert alert-error">✗ <%= error[0] %></div><% } %>
         <form action="https://formspree.io/f/xvzwjpqd" method="POST" data-validate class="card" style="padding:2rem;">
           <input type="hidden" name="form-type" value="Contact">
-          <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
+          <div class="duo-grid">
             <div class="form-group">
               <label class="form-label">Your Name *</label>
               <input type="text" name="name" class="form-control" placeholder="Full name" required>
