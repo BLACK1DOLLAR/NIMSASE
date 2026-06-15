@@ -18,6 +18,29 @@ mongoose.connect(process.env.MONGODB_URI)
     process.exit(1);
   });
 
+// ── Cloudinary config check (helps diagnose upload failures in logs) ──
+(function checkCloudinary() {
+  const name = process.env.CLOUDINARY_CLOUD_NAME;
+  const key  = process.env.CLOUDINARY_API_KEY;
+  const sec  = process.env.CLOUDINARY_API_SECRET;
+  const missing = [];
+  if (!name) missing.push('CLOUDINARY_CLOUD_NAME');
+  if (!key)  missing.push('CLOUDINARY_API_KEY');
+  if (!sec)  missing.push('CLOUDINARY_API_SECRET');
+  if (missing.length) {
+    console.error('⚠️  Cloudinary NOT configured — missing env vars:', missing.join(', '));
+    console.error('    Image uploads will fail until these are set on the host.');
+  } else {
+    console.log(`☁️  Cloudinary configured (cloud: ${name}, key: ${key.length} digits, secret: ${sec.length} chars)`);
+    // Live verify the credentials actually work (configure explicitly so this runs before routes load)
+    const cld = require('cloudinary').v2;
+    cld.config({ cloud_name: name, api_key: key, api_secret: sec });
+    cld.api.ping()
+      .then(() => console.log('☁️  Cloudinary credentials verified ✅'))
+      .catch(e => console.error('⚠️  Cloudinary credentials REJECTED:', e.message, '(http', e.error?.http_code, ') — check API key/secret on the host'));
+  }
+})();
+
 // View engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
@@ -67,16 +90,26 @@ app.use((req, res) => {
 // ── Global error handler — catches errors from ALL routes & middleware
 //    (including multer/Cloudinary upload failures, which run before route try/catch)
 app.use((err, req, res, next) => {
-  console.error('💥 Error:', err.message);
+  // Log full detail to the server console (shows up in Render logs)
+  console.error('💥 Error on', req.method, req.originalUrl);
+  console.error('   message :', err.message);
+  if (err.http_code || err.error?.http_code) console.error('   http_code:', err.http_code || err.error?.http_code);
+  if (err.name) console.error('   name    :', err.name);
+  if (err.stack) console.error(err.stack);
 
   // Turn common upload errors into a friendly, specific message
+  const raw = (err.message || '') + ' ' + (err.error?.message || '');
   let message = 'Something went wrong. Please try again.';
   if (err.code === 'LIMIT_FILE_SIZE') {
     message = 'That file is too large. Please choose an image under 12MB (try a smaller photo).';
   } else if (err.code === 'LIMIT_UNEXPECTED_FILE') {
     message = 'Unexpected file field. Please try uploading again.';
-  } else if (/Only image files/i.test(err.message || '')) {
+  } else if (/Only image files/i.test(raw)) {
     message = err.message;
+  } else if (/api_key|api_secret|cloud_name|Invalid Signature|Must supply|401|disabled account|Unknown API/i.test(raw)) {
+    message = 'Image upload service is not configured correctly on the server. Please check the Cloudinary settings (CLOUDINARY_API_KEY / API_SECRET / CLOUD_NAME).';
+  } else if (/ENOTFOUND|ETIMEDOUT|ECONNRESET|EAI_AGAIN|getaddrinfo|network|socket hang up/i.test(raw)) {
+    message = 'Could not reach the image upload service (network issue). Please try again in a moment.';
   }
 
   // For admin actions, flash the message and send the user back where they came from
