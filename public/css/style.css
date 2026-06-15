@@ -265,6 +265,18 @@ img { max-width: 100%; display: block; }
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.5rem; }
 .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
 
+/* ── RESPONSIVE SPLIT LAYOUTS (collapse to 1 col on tablet/mobile) ── */
+.split-grid   { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }
+.duo-grid     { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.feature-split { display: grid; grid-template-columns: 1fr auto; gap: 2rem; align-items: center; }
+@media (max-width: 900px) {
+  .split-grid    { grid-template-columns: 1fr; gap: 2.5rem; }
+  .feature-split { grid-template-columns: 1fr; gap: 1.5rem; }
+}
+@media (max-width: 520px) {
+  .duo-grid { grid-template-columns: 1fr; gap: 0.8rem; }
+}
+
 /* ── QUICK-ACTION CARDS ── */
 .quick-card {
   background: white; border-radius: var(--radius);
