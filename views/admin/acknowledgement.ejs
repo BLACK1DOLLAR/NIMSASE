@@ -53,6 +53,54 @@
   </div>
 </div>
 
+<!-- WEB DEVELOPER (FEATURED) -->
+<div class="admin-card">
+  <div class="admin-card-header"><h3>💻 Web Developer (Featured)</h3></div>
+  <div class="admin-card-body">
+    <form action="/admin/acknowledgement/webdev" method="POST" enctype="multipart/form-data">
+      <div class="admin-form-grid">
+
+        <!-- Photo -->
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Profile Picture</label>
+          <% if (settings.webDevPhoto) { %>
+          <div style="margin-bottom:0.7rem;display:flex;align-items:center;gap:1rem;">
+            <img src="<%= settings.webDevPhoto %>" style="width:80px;height:80px;border-radius:50%;object-fit:cover;border:2px solid var(--gold);">
+            <span style="font-size:0.78rem;color:var(--text-muted);">Current photo — upload a new one below to replace it.</span>
+          </div>
+          <% } %>
+          <div class="drop-zone">
+            <div class="drop-zone-icon">💻</div>
+            <div class="drop-zone-text">Click or drag the Web Developer's photo</div>
+            <div class="drop-zone-sub">JPG, PNG, WebP — square image works best</div>
+            <input type="file" name="photoFile" accept="image/*">
+            <div class="preview-grid"></div>
+          </div>
+          <input type="url" name="webDevPhoto" class="form-control" style="margin-top:0.5rem;" value="<%= settings.webDevPhoto || '' %>" placeholder="Or paste image URL">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Name *</label>
+          <input type="text" name="webDevName" class="form-control" value="<%= settings.webDevName || '' %>" placeholder="e.g. Samuel Okonkwo" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role / Title</label>
+          <input type="text" name="webDevRole" class="form-control" value="<%= settings.webDevRole || 'Web Developer' %>" placeholder="e.g. Lead Web Developer">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Year / Tenure</label>
+          <input type="text" name="webDevYear" class="form-control" value="<%= settings.webDevYear || '' %>" placeholder="e.g. 2026/2027">
+        </div>
+        <div class="form-group" style="grid-column:1/-1;">
+          <label class="form-label">Bio</label>
+          <textarea name="webDevBio" class="form-control" rows="3" placeholder="A short biography of the Web Developer..."><%= settings.webDevBio || '' %></textarea>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-gold">Save Web Developer Details</button>
+    </form>
+  </div>
+</div>
+
 <!-- ADD COLLABORATOR -->
 <div class="admin-card">
   <div class="admin-card-header"><h3>Add New Collaborator</h3></div>

@@ -91,8 +91,61 @@
   </div>
 </section>
 
-<!-- COLLABORATORS -->
+<!-- WEB DEVELOPER — FEATURED (between lead and collaborators) -->
+<% if (settings.webDevName) { %>
 <section class="section section-alt">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Built By</div>
+      <h2>Web Developer</h2>
+      <p>The hands that engineered and built this platform.</p>
+      <div class="gold-line"></div>
+    </div>
+
+    <div class="fade-in" style="max-width:640px;margin:0 auto;">
+      <div class="exec-card" style="display:flex;flex-direction:column;align-items:center;text-align:center;padding:2.4rem 2rem;border:1px solid var(--gold);">
+        <% if (settings.webDevPhoto) { %>
+          <img src="<%= settings.webDevPhoto %>" alt="<%= settings.webDevName %>"
+            style="width:130px;height:130px;object-fit:cover;border-radius:50%;border:3px solid var(--gold);margin-bottom:1.2rem;display:block;">
+        <% } else { %>
+          <div style="width:130px;height:130px;border-radius:50%;border:3px solid var(--gold);background:var(--green-light);display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:2.6rem;font-weight:600;color:var(--green-primary);margin-bottom:1.2rem;">
+            <%= settings.webDevName.charAt(0) %>
+          </div>
+        <% } %>
+        <div style="font-family:var(--font-display);font-size:1.5rem;font-weight:700;color:var(--green-primary);"><%= settings.webDevName %></div>
+        <div style="color:var(--gold-dark);font-weight:600;font-size:0.8rem;text-transform:uppercase;letter-spacing:0.05em;margin-top:0.4rem;">
+          <%= settings.webDevRole || 'Web Developer' %><% if (settings.webDevYear) { %> · <%= settings.webDevYear %><% } %>
+        </div>
+        <% if (settings.webDevBio) { %>
+          <p style="margin-top:1rem;color:var(--text-body);max-width:480px;"><%= settings.webDevBio %></p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</section>
+<% } else if (isAdmin) { %>
+<section class="section section-alt">
+  <div class="container">
+    <div class="section-header fade-in">
+      <div class="eyebrow">Built By</div>
+      <h2>Web Developer</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="fade-in" style="max-width:640px;margin:0 auto;text-align:center;">
+      <div class="exec-card" style="padding:2.4rem 2rem;border:1px dashed var(--gold);">
+        <div style="width:130px;height:130px;border-radius:50%;border:3px dashed var(--gold);background:var(--green-pale);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;">
+          <svg width="56" height="56" fill="rgba(201,168,76,0.55)" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
+        </div>
+        <p style="color:var(--text-muted);font-style:italic;margin-bottom:1rem;">The Web Developer's details will appear here once added.</p>
+        <a href="/admin/acknowledgement" class="btn btn-gold btn-sm">+ Add Web Developer</a>
+      </div>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- COLLABORATORS -->
+<section class="section">
   <div class="container">
     <div class="section-header fade-in">
       <div class="eyebrow">The Team</div>

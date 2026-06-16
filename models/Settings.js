@@ -24,6 +24,13 @@ const settingsSchema = new mongoose.Schema({
   ictDirectorBio:   { type: String, default: '' },
   ictDirectorPhoto: { type: String, default: '' },
   ackIntro:         { type: String, default: '' },   // optional intro paragraph
+
+  // ── Acknowledgement section — Web Developer (featured, between lead & collaborators) ──
+  webDevName:       { type: String, default: '' },
+  webDevRole:       { type: String, default: 'Web Developer' },
+  webDevYear:       { type: String, default: '' },
+  webDevBio:        { type: String, default: '' },
+  webDevPhoto:      { type: String, default: '' },
 }, { timestamps: true });
 
 module.exports = mongoose.model('Settings', settingsSchema);
