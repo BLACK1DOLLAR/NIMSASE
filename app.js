@@ -38,6 +38,17 @@ mongoose.connect(process.env.MONGODB_URI)
     cld.api.ping()
       .then(() => console.log('☁️  Cloudinary credentials verified ✅'))
       .catch(e => console.error('⚠️  Cloudinary credentials REJECTED:', e.message, '(http', e.error?.http_code, ') — check API key/secret on the host'));
+    // Verify the key can actually UPLOAD (a read-only/scoped key passes ping but cannot create assets)
+    const tinyPng = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNgYAAAAAMAAVR6T24AAAAASUVORK5CYII=';
+    cld.uploader.upload(tinyPng, { folder: 'nimsa-se/_healthcheck', public_id: 'ping', overwrite: true })
+      .then(() => console.log('☁️  Cloudinary UPLOAD permission OK ✅'))
+      .catch(e => {
+        const m = e.message || e.error?.message || '';
+        if (/missing permissions|forbidden|actions=|403/i.test(m) || (e.http_code || e.error?.http_code) === 403)
+          console.error('⛔ Cloudinary API key CANNOT UPLOAD — missing the "create" permission. Image uploads WILL fail. Use the master API key or grant upload permission in the Cloudinary console. Detail:', m);
+        else
+          console.error('⚠️  Cloudinary upload healthcheck failed:', m);
+      });
   }
 })();
 

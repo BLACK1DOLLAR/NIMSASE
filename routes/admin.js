@@ -2,7 +2,20 @@ const express     = require('express');
 const router      = express.Router();
 const bcrypt      = require('bcryptjs');
 const { requireAdmin } = require('../middleware/auth');
-const { cloudinary, uploadExec, uploadEvent, uploadBulletin, uploadNews, uploadGallery, uploadSite, uploadAck } = require('../middleware/upload');
+const { cloudinary, uploadExec, uploadEvent, uploadBulletin, uploadNews, uploadGallery, uploadSite, uploadAck, memoryUpload, uploadBufferToCloudinary } = require('../middleware/upload');
+
+// Turn a Cloudinary/upload error into a short, human-readable reason
+function cloudinaryReason(err) {
+  const msg = (err && (err.message || err.error?.message)) || '';
+  const code = err && (err.http_code || err.error?.http_code);
+  if (/missing permissions|forbidden|actions=|create/i.test(msg) || code === 403)
+    return 'the Cloudinary API key is not allowed to upload images (it is missing the "create" permission) — use the account\'s master API key or grant upload permission to this key in the Cloudinary console';
+  if (/Invalid Signature|api_key|api_secret|cloud_name|Must supply|401|disabled account|Unknown API|invalid/i.test(msg) || code === 401)
+    return 'the image service rejected the credentials (check Cloudinary keys on the server)';
+  if (/ENOTFOUND|ETIMEDOUT|ECONNRESET|EAI_AGAIN|getaddrinfo|network|socket hang up|timeout/i.test(msg))
+    return 'the server could not reach the image service (network issue) — please try again';
+  return msg || 'unknown upload error';
+}
 
 const User        = require('../models/User');
 const Executive   = require('../models/Executive');
@@ -497,7 +510,7 @@ router.get('/acknowledgement', async (req, res) => {
 });
 
 // Update ICT Director (the lead)
-router.post('/acknowledgement/director', uploadAck.single('photoFile'), async (req, res) => {
+router.post('/acknowledgement/director', memoryUpload.single('photoFile'), async (req, res) => {
   try {
     let s = await Settings.findOne();
     if (!s) s = new Settings();
@@ -507,59 +520,102 @@ router.post('/acknowledgement/director', uploadAck.single('photoFile'), async (r
     s.ictDirectorBio  = req.body.ictDirectorBio  || '';
     s.ackIntro        = req.body.ackIntro        || '';
 
+    let imageError = null;
     if (req.file) {
-      await deleteCloudinaryFile(s.ictDirectorPhoto);
-      s.ictDirectorPhoto = req.file.path;
-    } else if (req.body.ictDirectorPhoto !== undefined) {
+      // Upload INSIDE the try/catch so a Cloudinary failure can't wipe out the save
+      try {
+        const url = await uploadBufferToCloudinary(req.file, 'acknowledgement');
+        await deleteCloudinaryFile(s.ictDirectorPhoto);
+        s.ictDirectorPhoto = url;
+      } catch (e) {
+        imageError = e;
+        console.error('💥 Cloudinary upload failed (director):', e.message, 'http', e.http_code || e.error?.http_code || '?');
+      }
+    } else if (req.body.ictDirectorPhoto !== undefined && req.body.ictDirectorPhoto !== '') {
       s.ictDirectorPhoto = req.body.ictDirectorPhoto;
     }
 
-    await s.save();
-    req.flash('success', 'ICT Director details saved.');
+    await s.save(); // text details are saved regardless of the photo
+
+    if (imageError) {
+      req.flash('error', `Details saved, but the photo could not be uploaded — ${cloudinaryReason(imageError)}.`);
+    } else {
+      req.flash('success', 'ICT Director details saved.');
+    }
   } catch (err) {
-    console.error(err);
-    req.flash('error', 'Failed to save ICT Director details.');
+    console.error('💥 Director save error:', err);
+    req.flash('error', `Failed to save details: ${err.message}`);
   }
   res.redirect('/admin/acknowledgement');
 });
 
 // Add collaborator
-router.post('/acknowledgement/collaborators', uploadAck.single('photoFile'), async (req, res) => {
+router.post('/acknowledgement/collaborators', memoryUpload.single('photoFile'), async (req, res) => {
   try {
     const { name, role, bio } = req.body;
     const count = await Collaborator.countDocuments();
-    const photo = req.file ? req.file.path : (req.body.photo || '');
+
+    let photo = req.body.photo || '';
+    let imageError = null;
+    if (req.file) {
+      try {
+        photo = await uploadBufferToCloudinary(req.file, 'acknowledgement');
+      } catch (e) {
+        imageError = e;
+        console.error('💥 Cloudinary upload failed (add collaborator):', e.message, 'http', e.http_code || e.error?.http_code || '?');
+      }
+    }
+
     await Collaborator.create({ name, role, bio, photo, order: count + 1 });
-    req.flash('success', `${name} added as a collaborator.`);
+
+    if (imageError) {
+      req.flash('error', `${name} was added, but the photo could not be uploaded — ${cloudinaryReason(imageError)}.`);
+    } else {
+      req.flash('success', `${name} added as a collaborator.`);
+    }
   } catch (err) {
-    console.error(err);
-    req.flash('error', 'Failed to add collaborator.');
+    console.error('💥 Add collaborator error:', err);
+    req.flash('error', `Failed to add collaborator: ${err.message}`);
   }
   res.redirect('/admin/acknowledgement');
 });
 
 // Edit collaborator
-router.post('/acknowledgement/collaborators/:id/edit', uploadAck.single('photoFile'), async (req, res) => {
+router.post('/acknowledgement/collaborators/:id/edit', memoryUpload.single('photoFile'), async (req, res) => {
   try {
     const collab = await Collaborator.findById(req.params.id);
     if (!collab) { req.flash('error', 'Collaborator not found.'); return res.redirect('/admin/acknowledgement'); }
+
     let photo = collab.photo;
+    let imageError = null;
     if (req.file) {
-      await deleteCloudinaryFile(collab.photo);
-      photo = req.file.path;
+      try {
+        const url = await uploadBufferToCloudinary(req.file, 'acknowledgement');
+        await deleteCloudinaryFile(collab.photo);
+        photo = url;
+      } catch (e) {
+        imageError = e;
+        console.error('💥 Cloudinary upload failed (edit collaborator):', e.message, 'http', e.http_code || e.error?.http_code || '?');
+      }
     } else if (req.body.photo !== undefined && req.body.photo !== '') {
       photo = req.body.photo;
     }
+
     await Collaborator.findByIdAndUpdate(req.params.id, {
       name: req.body.name,
       role: req.body.role,
       bio:  req.body.bio,
       photo
     });
-    req.flash('success', 'Collaborator updated.');
+
+    if (imageError) {
+      req.flash('error', `Details updated, but the new photo could not be uploaded — ${cloudinaryReason(imageError)}.`);
+    } else {
+      req.flash('success', 'Collaborator updated.');
+    }
   } catch (err) {
-    console.error(err);
-    req.flash('error', 'Update failed.');
+    console.error('💥 Edit collaborator error:', err);
+    req.flash('error', `Update failed: ${err.message}`);
   }
   res.redirect('/admin/acknowledgement');
 });
