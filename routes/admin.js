@@ -549,6 +549,45 @@ router.post('/acknowledgement/director', memoryUpload.single('photoFile'), async
   res.redirect('/admin/acknowledgement');
 });
 
+// Update Web Developer (featured tier)
+router.post('/acknowledgement/webdev', memoryUpload.single('photoFile'), async (req, res) => {
+  try {
+    let s = await Settings.findOne();
+    if (!s) s = new Settings();
+
+    s.webDevName = req.body.webDevName || '';
+    s.webDevRole = req.body.webDevRole || 'Web Developer';
+    s.webDevYear = req.body.webDevYear || '';
+    s.webDevBio  = req.body.webDevBio  || '';
+
+    let imageError = null;
+    if (req.file) {
+      try {
+        const url = await uploadBufferToCloudinary(req.file, 'acknowledgement');
+        await deleteCloudinaryFile(s.webDevPhoto);
+        s.webDevPhoto = url;
+      } catch (e) {
+        imageError = e;
+        console.error('💥 Cloudinary upload failed (webdev):', e.message, 'http', e.http_code || e.error?.http_code || '?');
+      }
+    } else if (req.body.webDevPhoto !== undefined && req.body.webDevPhoto !== '') {
+      s.webDevPhoto = req.body.webDevPhoto;
+    }
+
+    await s.save();
+
+    if (imageError) {
+      req.flash('error', `Details saved, but the photo could not be uploaded — ${cloudinaryReason(imageError)}.`);
+    } else {
+      req.flash('success', 'Web Developer details saved.');
+    }
+  } catch (err) {
+    console.error('💥 Web Developer save error:', err);
+    req.flash('error', `Failed to save details: ${err.message}`);
+  }
+  res.redirect('/admin/acknowledgement');
+});
+
 // Add collaborator
 router.post('/acknowledgement/collaborators', memoryUpload.single('photoFile'), async (req, res) => {
   try {
