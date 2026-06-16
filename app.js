@@ -115,6 +115,8 @@ app.get('/sitemap.xml', (req, res) => {
   );
 });
 
+app.get('/health', (req, res) => res.status(200).send('OK'));
+
 // 404
 app.use((req, res) => {
   res.status(404).render('404', { title: '404 — Page Not Found' });
@@ -165,3 +167,15 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`🏥 NiMSA SE Website running at http://localhost:${PORT}`);
 });
+
+// ── Keep-alive self-ping (prevents Render free tier from sleeping) ──
+// Pings own /health every 14 min. Only runs in production with SITE_URL set.
+if (process.env.NODE_ENV === 'production' && process.env.SITE_URL) {
+  const https = require('https');
+  const pingUrl = process.env.SITE_URL.replace(/\/$/, '') + '/health';
+  setInterval(() => {
+    https.get(pingUrl, r => console.log('🔄 keep-alive ping', r.statusCode))
+         .on('error', e => console.error('keep-alive ping failed:', e.message));
+  }, 14 * 60 * 1000); // 14 minutes
+  console.log('🔄 Keep-alive self-ping enabled →', pingUrl);
+}
