@@ -85,6 +85,9 @@ app.use((req, res, next) => {
   res.locals.success   = req.flash('success');
   res.locals.error     = req.flash('error');
   res.locals.currentPath = req.path;
+  // Base public URL — change SITE_URL env var when you buy a custom domain
+  res.locals.siteUrl = (process.env.SITE_URL || 'https://nimsa-se.onrender.com').replace(/\/$/, '');
+  res.locals.canonicalUrl = res.locals.siteUrl + req.path;
   next();
 });
 
@@ -92,6 +95,25 @@ app.use((req, res, next) => {
 app.use('/',      require('./routes/index'));
 app.use('/auth',  require('./routes/auth'));
 app.use('/admin', require('./routes/admin'));
+
+// ── SEO: robots.txt & sitemap.xml ──
+const SITE_URL = (process.env.SITE_URL || 'https://nimsa-se.onrender.com').replace(/\/$/, '');
+const PUBLIC_PAGES = ['/', '/about', '/leadership', '/events', '/bulletin', '/resources', '/gallery', '/news', '/campaigns', '/join', '/contact', '/acknowledgement'];
+
+app.get('/robots.txt', (req, res) => {
+  res.type('text/plain').send(
+    `User-agent: *\nAllow: /\nDisallow: /admin\nDisallow: /auth\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+  );
+});
+
+app.get('/sitemap.xml', (req, res) => {
+  const urls = PUBLIC_PAGES.map(p =>
+    `  <url><loc>${SITE_URL}${p}</loc><changefreq>weekly</changefreq><priority>${p === '/' ? '1.0' : '0.8'}</priority></url>`
+  ).join('\n');
+  res.type('application/xml').send(
+    `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`
+  );
+});
 
 // 404
 app.use((req, res) => {

@@ -1,0 +1,38 @@
+<%
+  // Reusable SEO head tags. Pass `metaDesc` from the route/page; falls back to a default.
+  const _desc = (typeof metaDesc !== 'undefined' && metaDesc)
+    ? metaDesc
+    : "NiMSA South East Region (NiMSA SSE) — the official website of the Nigerian Medical Students' Association, South East Region. News, events, leadership, bulletins and resources for medical students across the South East.";
+  const _url = (typeof canonicalUrl !== 'undefined') ? canonicalUrl : (siteUrl || '');
+  const _img = (typeof settings !== 'undefined' && settings && settings.heroImage) ? settings.heroImage : (siteUrl + '/images/logo.png');
+%>
+<meta name="description" content="<%= _desc %>">
+<meta name="keywords" content="NiMSA South East, NiMSA SSE, NiMSA South East Region, Nigerian Medical Students Association, NiMSA, medical students South East Nigeria, NiMSA SE">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="<%= _url %>">
+
+<!-- Open Graph (WhatsApp / Facebook / LinkedIn preview) -->
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="NiMSA South East Region">
+<meta property="og:title" content="<%= title %>">
+<meta property="og:description" content="<%= _desc %>">
+<meta property="og:url" content="<%= _url %>">
+<meta property="og:image" content="<%= _img %>">
+
+<!-- Twitter card -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="<%= title %>">
+<meta name="twitter:description" content="<%= _desc %>">
+<meta name="twitter:image" content="<%= _img %>">
+
+<!-- Organization structured data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "NiMSA South East Region",
+  "alternateName": ["NiMSA SSE", "NiMSA SE", "Nigerian Medical Students' Association South East Region"],
+  "url": "<%= siteUrl %>",
+  "description": "<%= _desc %>"
+}
+</script>
