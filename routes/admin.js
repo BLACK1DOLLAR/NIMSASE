@@ -468,7 +468,7 @@ router.post('/settings', uploadSite.fields([
     if (!s) s = new Settings();
 
     // Text fields
-    const textFields = ['whatsappNumber','email','facebook','instagram','twitter','youtube',
+    const textFields = ['whatsappNumber','email','facebook','instagram','twitter','snapchat',
       'siteName','resPastQuestions','resClinicalGuides','resIFMSA','resScholarships',
       'resResearch','resNMAMDCN','watermarkText'];
     textFields.forEach(f => { if (req.body[f] !== undefined) s[f] = req.body[f]; });

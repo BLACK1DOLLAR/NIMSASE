@@ -33,7 +33,7 @@
 
     <% if (settings.ictDirectorName) { %>
     <div class="about-grid fade-in" style="align-items:center;">
-      <div class="about-img-block" style="display:flex;align-items:center;justify-content:center;padding:2.5rem;">
+      <div class="about-img-block" style="display:flex;align-items:center;justify-content:center;padding:2.5rem;height:auto;min-height:380px;">
         <div style="text-align:center;color:white;">
           <% if (settings.ictDirectorPhoto) { %>
             <img src="<%= settings.ictDirectorPhoto %>" alt="<%= settings.ictDirectorName %>"
@@ -66,7 +66,7 @@
     <% } else { %>
     <!-- Placeholder ICT Director -->
     <div class="about-grid fade-in" style="align-items:center;">
-      <div class="about-img-block" style="display:flex;align-items:center;justify-content:center;padding:2.5rem;">
+      <div class="about-img-block" style="display:flex;align-items:center;justify-content:center;padding:2.5rem;height:auto;min-height:380px;">
         <div style="text-align:center;color:white;">
           <div style="width:170px;height:170px;border-radius:50%;border:3px dashed var(--gold);background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;margin:0 auto 1.2rem;">
             <svg width="70" height="70" fill="rgba(201,168,76,0.6)" viewBox="0 0 24 24"><path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/></svg>
