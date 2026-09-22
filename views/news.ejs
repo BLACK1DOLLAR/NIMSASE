@@ -57,7 +57,7 @@
       <div class="news-card fade-in" style="transition-delay:<%= i*0.1 %>s">
         <div class="news-card-img" style="<%= item.image ? 'padding:0;overflow:hidden;' : '' %>">
           <% if (item.image) { %>
-            <img src="<%= item.image %>" alt="<%= item.title %>" style="width:100%;height:100%;object-fit:cover;">
+            <img src="<%= item.image %>" alt="<%= item.title %>" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async">
           <% } else { %>
           <div style="text-align:center;padding:1rem;">
             <span class="badge badge-gold"><%= item.category %></span>

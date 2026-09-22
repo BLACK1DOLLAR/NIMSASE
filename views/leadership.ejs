@@ -50,7 +50,8 @@
           <div style="display:flex;justify-content:center;margin:1.8rem auto 1.1rem;">
             <% if (exec.photo && !isVacant) { %>
               <img src="<%= exec.photo %>" alt="<%= exec.name %>"
-                style="width:90px;height:90px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;flex-shrink:0;">
+                style="width:90px;height:90px;object-fit:cover;border-radius:50%;border:2px solid var(--gold);display:block;flex-shrink:0;"
+                loading="lazy" decoding="async" width="90" height="90">
             <% } else { %>
               <div style="width:90px;height:90px;border-radius:50%;border:2px solid <%= isVacant ? 'var(--border)' : 'var(--gold)' %>;background:<%= isVacant ? 'var(--border)' : 'var(--green-light)' %>;display:flex;align-items:center;justify-content:center;font-family:var(--font-display);font-size:1.8rem;font-weight:600;color:<%= isVacant ? 'var(--text-muted)' : 'var(--green-primary)' %>;flex-shrink:0;">
                 <%= isVacant ? '?' : exec.name.charAt(0) %>
