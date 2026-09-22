@@ -36,52 +36,44 @@ http://localhost:3000
 
 ## 📁 Project Structure
 
+The public marketing site is a prerendered React app (`web/`); the admin dashboard, auth,
+and all data live in the original Express + EJS + MongoDB backend. Express serves both.
+
 ```
 nimsa-se/
-├── app.js                    # Express entry point
-├── package.json
-├── data/
-│   └── db.json               # Flat-file database (all content stored here)
+├── app.js                    # Express entry point — mounts /api, /auth, /admin,
+│                              #   then serves web/dist (the built React site) for everything else
+├── package.json               # "npm run build" builds web/ too (also runs on postinstall)
 ├── middleware/
-│   ├── auth.js               # Login/Admin guard middleware
-│   └── db.js                 # JSON read/write helpers
+│   ├── auth.js                # Login/Admin guard middleware
+├── models/                    # Mongoose schemas (Executive, Event, Bulletin, News, …)
 ├── routes/
-│   ├── index.js              # Public page routes
-│   ├── auth.js               # Login / Register / Logout
-│   └── admin.js              # All admin CRUD routes
+│   ├── api.js                 # Read-only JSON endpoints powering the React site
+│   ├── auth.js                 # Login / Register / Logout (still EJS)
+│   └── admin.js                # All admin CRUD routes (still EJS)
 ├── views/
-│   ├── partials/
-│   │   ├── nav.ejs           # Sticky navigation bar
-│   │   └── footer.ejs        # Footer + WhatsApp FAB
-│   ├── admin/
-│   │   ├── layout-top.ejs    # Admin sidebar layout (top)
-│   │   ├── layout-bottom.ejs # Admin sidebar layout (bottom)
-│   │   ├── dashboard.ejs     # Admin home/stats
-│   │   ├── executives.ejs    # Manage REC & school presidents
-│   │   ├── exec-edit.ejs     # Edit individual executive
-│   │   ├── events.ejs        # Manage events
-│   │   ├── bulletin.ejs      # Manage bulletins
-│   │   ├── news.ejs          # Manage news posts
-│   │   ├── users.ejs         # Manage user accounts + roles
-│   │   └── settings.ejs      # Site-wide settings
-│   ├── index.ejs             # Homepage
-│   ├── about.ejs             # About NiMSA SE
-│   ├── leadership.ejs        # Executives directory
-│   ├── events.ejs            # Events listing
-│   ├── bulletin.ejs          # Monthly bulletin + archive
-│   ├── resources.ejs         # Resource hub
-│   ├── gallery.ejs           # Photo gallery
-│   ├── news.ejs              # News & stories
-│   ├── campaigns.ejs         # Campaigns & career corner
-│   ├── join.ejs              # Member registration
-│   ├── contact.ejs           # Contact form
-│   ├── login.ejs             # Login page
-│   ├── register.ejs          # Registration page
-│   └── 404.ejs               # 404 error page
-└── public/
-    ├── css/style.css          # All styles (NiMSA SE brand)
-    └── js/main.js             # All client-side JS
+│   ├── partials/nav.ejs, footer.ejs   # Used by 404/500/change-password only
+│   ├── admin/                  # Admin dashboard templates
+│   ├── login.ejs, register.ejs, change-password.ejs
+│   └── 404.ejs, 500.ejs
+├── public/
+│   ├── css/style.css, js/main.js      # Styles/JS for the remaining EJS pages (admin/auth)
+│   └── uploads/                # Cloudinary-backed upload staging
+└── web/                        # React public site (Vite + React Router + Framer Motion + Lenis)
+    ├── src/pages/               # Home, About, Leadership, Events, Bulletin, Resources,
+    │                            #   Gallery, News, Campaigns, Join, Contact, Acknowledgement
+    ├── src/components/          # Nav, Footer, Magnetic (rubber buttons), Reveal, ZoomHero, …
+    ├── src/lib/api.js           # Client-side: fetches /api/*. Build-time: reads MongoDB directly
+    ├── src/lib/serverData.js    # Build-time-only direct MongoDB reads (no server needed yet at build)
+    └── dist/                    # Build output (gitignored) — prerendered per-route static HTML
 ```
+
+### Building the React site
+
+`npm run build` (or the `postinstall` hook, which runs automatically after `npm install`)
+builds `web/` via `vite-react-ssg`, which prerenders every public route to static HTML with
+real content pulled directly from MongoDB — no running Express server is required at build
+time. `MONGODB_URI` must be set in the build environment for this to pick up real data.
 
 ---
 
