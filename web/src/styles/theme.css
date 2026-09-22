@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,600&family=DM+Sans:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --green-primary:  #005200;
+  --green-deep:     #002200;
+  --green-mid:      #003d00;
+  --green-rich:     #1a4a1a;
+  --green-light:    #e6f2e6;
+  --green-pale:     #f2faf2;
+  --gold:           #C9A84C;
+  --gold-bright:    #D4AF37;
+  --gold-dark:      #9E7A2A;
+  --gold-light:     #fdf3d7;
+  --gold-subtle:    #f8efc8;
+  --cream:          #fdfaf4;
+  --white:          #ffffff;
+  --text-dark:      #0d1f0d;
+  --text-body:      #1e3a1e;
+  --text-muted:     #4a6a4a;
+  --border:         #c5ddc5;
+  --border-gold:    rgba(201,168,76,0.35);
+
+  --shadow-xs:  0 1px 4px rgba(0,50,0,0.07);
+  --shadow-sm:  0 2px 12px rgba(0,50,0,0.09);
+  --shadow-md:  0 6px 24px rgba(0,50,0,0.13);
+  --shadow-lg:  0 12px 48px rgba(0,50,0,0.18);
+  --shadow-xl:  0 24px 80px rgba(0,50,0,0.22);
+
+  /* Sharp, angular by default — brand curves reserved for hero/section-divider accents only */
+  --radius: 2px;
+  --radius-lg: 2px;
+
+  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --font-display: 'Cormorant Garamond', Georgia, serif;
+  --font-body:    'DM Sans', system-ui, -apple-system, sans-serif;
+}

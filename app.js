@@ -92,9 +92,14 @@ app.use((req, res, next) => {
 });
 
 // Routes
-app.use('/',      require('./routes/index'));
+app.use('/api',   require('./routes/api'));
 app.use('/auth',  require('./routes/auth'));
 app.use('/admin', require('./routes/admin'));
+
+// ── React public site (prerendered by vite-react-ssg) ──
+// Public marketing pages are now served as static, prerendered HTML from web/dist.
+// /admin, /auth and /api above still resolve first since Express matches routes in order.
+app.use(express.static(path.join(__dirname, 'web/dist')));
 
 // ── SEO: robots.txt & sitemap.xml ──
 const SITE_URL = (process.env.SITE_URL || 'https://nimsa-se.onrender.com').replace(/\/$/, '');
