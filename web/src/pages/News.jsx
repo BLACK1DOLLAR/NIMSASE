@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
+import AdminNotice from '../components/AdminNotice';
 import { apiGet } from '../lib/api';
 
 export default function News() {
@@ -22,8 +23,9 @@ export default function News() {
 
       <section className="section">
         <div className="container">
+          <AdminNotice href="/admin/news" style={{ marginTop: 0, marginBottom: '2rem' }}>Manage news posts — add, edit, or remove news articles.</AdminNotice>
           {featured && (
-            <Reveal className="grid-2" style={{ gridTemplateColumns: '1.4fr 1fr', gap: '2rem', marginBottom: '4rem' }}>
+            <Reveal className="grid-2" style={{ gap: '2rem', marginBottom: '4rem' }}>
               <div style={{ borderRadius: 0, height: 340, background: 'linear-gradient(135deg,var(--green-primary),var(--green-deep))', display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem', textAlign: 'center' }}>
                 <div style={{ color: 'white' }}>
                   <span className="badge badge-gold">{featured.category}</span>

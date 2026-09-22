@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence, motion } from 'framer-motion';
 import Reveal from '../components/Reveal';
+import AdminNotice from '../components/AdminNotice';
 import { apiGet } from '../lib/api';
 
 const CATS = [
@@ -70,6 +71,7 @@ export default function Gallery() {
               <p style={{ color: 'var(--text-muted)', maxWidth: 400, margin: '0.8rem auto 0' }}>Photos from regional events and outreaches will appear here once uploaded.</p>
             </div>
           )}
+          <AdminNotice href="/admin/gallery">Manage gallery photos — upload, categorise, and delete photos from all events and activities.</AdminNotice>
         </div>
       </section>
 

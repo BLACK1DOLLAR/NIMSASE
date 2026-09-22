@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from 'framer-motion';
  * Background image(s) slowly zoom, then crossfade to the next image and repeat.
  * Falls back to the static brand gradient when no images are provided.
  */
-export default function ZoomHero({ images = [], intervalMs = 7000, className = 'zoom-hero', children }) {
+export default function ZoomHero({ images = [], intervalMs = 7000, className = 'zoom-hero', watermark, watermarkText, children }) {
   const [index, setIndex] = useState(0);
   const hasImages = images.length > 0;
 
@@ -33,6 +33,12 @@ export default function ZoomHero({ images = [], intervalMs = 7000, className = '
       )}
       <div className="zoom-hero-overlay" />
       <div className="zoom-hero-content">{children}</div>
+      {watermark && (
+        <div className="hero-watermark">
+          <img src={watermark} alt={watermarkText || 'Face of NiMSA SE'} />
+          {watermarkText && <div className="hero-watermark-caption">{watermarkText}</div>}
+        </div>
+      )}
     </section>
   );
 }

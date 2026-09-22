@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
+import AdminNotice from '../components/AdminNotice';
 import { apiGet } from '../lib/api';
 
 export default function Bulletin() {
@@ -26,7 +27,7 @@ export default function Bulletin() {
       <section className="section">
         <div className="container">
           {featured && (
-            <Reveal style={{ background: 'linear-gradient(140deg,var(--green-deep),#003a00 60%,#005200)', padding: '3rem', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '3rem', alignItems: 'center', border: '1px solid rgba(201,168,76,0.25)', marginBottom: '4rem' }}>
+            <Reveal className="grid-2" style={{ background: 'linear-gradient(140deg,var(--green-deep),#003a00 60%,#005200)', padding: '3rem', gap: '3rem', alignItems: 'center', border: '1px solid rgba(201,168,76,0.25)', marginBottom: '4rem' }}>
               <div>
                 <span className="badge badge-gold">{featured.issue} — Latest Issue</span>
                 <h2 style={{ color: 'white', margin: '1rem 0 0.8rem' }}>{featured.title}</h2>
@@ -89,6 +90,7 @@ export default function Bulletin() {
               <button type="submit" className="btn btn-gold">Subscribe</button>
             </form>
           </Reveal>
+          <AdminNotice href="/admin/bulletin">Manage bulletins — upload new issues and manage the archive.</AdminNotice>
         </div>
       </section>
     </>

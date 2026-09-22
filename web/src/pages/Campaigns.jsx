@@ -39,7 +39,7 @@ export default function Campaigns() {
       <section className="section">
         <div className="container">
           <Reveal style={{ background: 'linear-gradient(140deg,var(--green-deep),var(--green-primary))', padding: '3rem', color: 'white', border: '1px solid rgba(201,168,76,0.2)', marginBottom: '4rem' }}>
-            <div className="grid-2" style={{ gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'center' }}>
+            <div className="grid-2" style={{ gap: '2rem', alignItems: 'center' }}>
               <div>
                 <div className="eyebrow" style={{ background: 'rgba(201,168,76,0.14)', border: '1px solid rgba(201,168,76,0.4)', color: 'var(--gold)' }}>Flagship Program</div>
                 <h2 style={{ color: 'white', margin: '1rem 0 0.8rem' }}>MAK NiMSA Health Week</h2>

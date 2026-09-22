@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
+import AdminNotice from '../components/AdminNotice';
 import { apiGet } from '../lib/api';
 
 export default function Acknowledgement() {
@@ -29,7 +30,7 @@ export default function Acknowledgement() {
               <p>{settings.ackIntro || 'The vision, design, and technical leadership behind this platform.'}</p>
               <div className="gold-line" />
             </Reveal>
-            <div className="grid-2" style={{ gridTemplateColumns: '1fr 1fr', gap: '3rem', alignItems: 'center' }}>
+            <div className="grid-2" style={{ gap: '3rem', alignItems: 'center' }}>
               <Reveal style={{ background: 'linear-gradient(155deg,var(--green-deep),var(--green-primary))', padding: '2.5rem', textAlign: 'center', minHeight: 380, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <div style={{ color: 'white' }}>
                   {settings.ictDirectorPhoto
@@ -97,6 +98,10 @@ export default function Acknowledgement() {
           </div>
         </section>
       )}
+
+      <div className="container">
+        <AdminNotice href="/admin/acknowledgement">Manage acknowledgement — update the ICT Director and add, edit or remove collaborators.</AdminNotice>
+      </div>
     </>
   );
 }
