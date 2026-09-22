@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
+import AdminNotice from '../components/AdminNotice';
 import { apiGet } from '../lib/api';
 
 const CATS = [
@@ -88,6 +89,7 @@ export default function Leadership() {
               );
             })}
           </div>
+          <AdminNotice href="/admin/executives">Manage executives — add, edit or remove REC members and school chapter presidents.</AdminNotice>
         </div>
       </section>
 

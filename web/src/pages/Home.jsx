@@ -33,7 +33,7 @@ export default function Home() {
         <title>Home — NiMSA South East Region</title>
       </Helmet>
 
-      <ZoomHero images={heroImages}>
+      <ZoomHero images={heroImages} watermark={settings.watermarkImage} watermarkText={settings.watermarkText}>
         <Reveal as="div" className="eyebrow" style={{ background: 'rgba(201,168,76,0.18)', border: '1px solid rgba(201,168,76,0.6)', color: 'var(--gold)' }}>
           🏆 Most Exceptional Region of NiMSA
         </Reveal>
@@ -122,7 +122,7 @@ export default function Home() {
       {/* ABOUT TEASER */}
       <section className="section section-alt">
         <div className="container">
-          <div className="grid-2" style={{ alignItems: 'center', gridTemplateColumns: '1.1fr 0.9fr', gap: '3rem' }}>
+          <div className="grid-2" style={{ alignItems: 'center', gap: '3rem' }}>
             <Reveal>
               <div className="eyebrow">About NiMSA SE</div>
               <h2 style={{ margin: '0.8rem 0 1.2rem' }}>The Most Exceptional<br />Region of NiMSA</h2>
@@ -216,7 +216,7 @@ export default function Home() {
       {bulletin && (
         <section className="section">
           <div className="container">
-            <Reveal style={{ background: 'linear-gradient(140deg,var(--green-deep),#005200)', padding: '3rem', display: 'grid', gridTemplateColumns: '1.1fr 0.9fr', gap: '3rem', alignItems: 'center', border: '1px solid rgba(201,168,76,0.25)' }}>
+            <Reveal className="grid-2" style={{ background: 'linear-gradient(140deg,var(--green-deep),#005200)', padding: '3rem', gap: '3rem', alignItems: 'center', border: '1px solid rgba(201,168,76,0.25)' }}>
               <div>
                 <span className="badge badge-gold">{bulletin.issue}</span>
                 <h2 style={{ color: 'white', margin: '0.8rem 0' }}>{bulletin.title}</h2>

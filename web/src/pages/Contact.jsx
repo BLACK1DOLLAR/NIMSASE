@@ -21,7 +21,7 @@ export default function Contact() {
 
       <section className="section">
         <div className="container">
-          <div className="grid-2" style={{ gridTemplateColumns: '1.2fr 1fr', gap: '3rem', alignItems: 'start' }}>
+          <div className="grid-2" style={{ gap: '3rem', alignItems: 'start' }}>
             <Reveal>
               <h2 style={{ marginBottom: '1.5rem' }}>Send Us a Message</h2>
               <form action="https://formspree.io/f/xvzwjpqd" method="POST" className="card" style={{ padding: '2rem' }}>
@@ -79,6 +79,7 @@ export default function Contact() {
                 <a href={settings.facebook || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#1877f2', color: 'white' }}>Facebook</a>
                 <a href={settings.instagram || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: 'linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)', color: 'white' }}>Instagram</a>
                 <a href={settings.twitter || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#000', color: 'white' }}>X / Twitter</a>
+                <a href={settings.snapchat || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#FFFC00', color: 'black' }}>Snapchat</a>
               </div>
 
               <div style={{ background: 'var(--green-pale)', padding: '1.5rem', marginTop: '2rem', border: '1px solid var(--border)' }}>

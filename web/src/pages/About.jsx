@@ -35,7 +35,7 @@ export default function About() {
 
       <section className="section">
         <div className="container">
-          <div className="grid-2" style={{ gridTemplateColumns: '1.15fr 0.85fr', gap: '3.5rem', alignItems: 'center' }}>
+          <div className="grid-2" style={{ gap: '3.5rem', alignItems: 'center' }}>
             <Reveal>
               <div className="eyebrow">Our Identity</div>
               <h2 style={{ margin: '0.8rem 0 1.2rem' }}>What is NiMSA South East Region?</h2>

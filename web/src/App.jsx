@@ -23,7 +23,7 @@ export default function App() {
       <main>
         <Outlet context={{ settings }} />
       </main>
-      <Footer settings={settings} />
+      <Footer settings={settings} session={session} />
       <WhatsAppFab number={settings.whatsappNumber} />
     </HelmetProvider>
   );

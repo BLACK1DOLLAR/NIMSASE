@@ -33,7 +33,7 @@ export default function Join() {
 
       <section className="section">
         <div className="container">
-          <div className="grid-2" style={{ gridTemplateColumns: '1fr 1.2fr', gap: '4rem', alignItems: 'start' }}>
+          <div className="grid-2" style={{ gap: '4rem', alignItems: 'start' }}>
             <Reveal>
               <h2 style={{ marginBottom: '1.5rem' }}>Why Join NiMSA SE?</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
