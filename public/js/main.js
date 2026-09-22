@@ -19,14 +19,72 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
-  // ── NAVBAR SCROLL EFFECT ──
+  // ── NAVBAR SCROLL EFFECT (transparent-at-top -> frosted) ──
   const navbar = document.getElementById('navbar');
   if (navbar) {
-    window.addEventListener('scroll', () => {
-      navbar.style.boxShadow = window.scrollY > 10
-        ? '0 4px 30px rgba(0,0,0,0.4)'
-        : '0 2px 20px rgba(0,0,0,0.3)';
+    const syncNavbar = () => navbar.classList.toggle('scrolled', window.scrollY > 40);
+    syncNavbar();
+    window.addEventListener('scroll', syncNavbar, { passive: true });
+  }
+
+  // ── SMOOTH INERTIA SCROLL (Lenis) — public pages only, respects reduced motion ──
+  const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isAdminPage = document.body.classList.contains('admin-body');
+  if (!prefersReducedMotion && !isAdminPage && typeof Lenis !== 'undefined') {
+    const lenis = new Lenis({ duration: 1.1, smoothWheel: true, wheelMultiplier: 1 });
+    const raf = (time) => { lenis.raf(time); requestAnimationFrame(raf); };
+    requestAnimationFrame(raf);
+  }
+
+  // ── MAGNETIC BUTTONS — cursor-aware pull on primary CTAs (fine pointers only) ──
+  if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+    const magnets = document.querySelectorAll('.btn-gold, .btn-outline-gold, .whatsapp-fab');
+    magnets.forEach(el => {
+      el.classList.add('magnetic');
+      const strength = 0.35;
+      el.addEventListener('mousemove', (e) => {
+        const rect = el.getBoundingClientRect();
+        const mx = (e.clientX - rect.left - rect.width / 2) * strength;
+        const my = (e.clientY - rect.top - rect.height / 2) * strength;
+        el.classList.add('magnetic-active');
+        el.style.transform = `translate(${mx}px, ${my}px)`;
+      });
+      el.addEventListener('mouseleave', () => {
+        el.classList.remove('magnetic-active');
+        el.style.transform = '';
+      });
     });
+  }
+
+  // ── HERO STAT COUNT-UP — animates "13", "3,500+", "1968" style numbers into view ──
+  if (!prefersReducedMotion) {
+    const statNums = document.querySelectorAll('.hero-stat .num');
+    const countObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        countObserver.unobserve(entry.target);
+        const el = entry.target;
+        const raw = el.textContent.trim();
+        const match = raw.match(/^([\d,]+)(.*)$/);
+        if (!match) return; // non-numeric (e.g. "IFMSA") — leave as-is
+        const target = parseInt(match[1].replace(/,/g, ''), 10);
+        const suffix = match[2];
+        if (Number.isNaN(target)) return;
+        el.setAttribute('data-counting', '');
+        const duration = 1200;
+        const start = performance.now();
+        const step = (now) => {
+          const progress = Math.min((now - start) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          const value = Math.round(target * eased);
+          el.textContent = value.toLocaleString('en-US') + suffix;
+          if (progress < 1) requestAnimationFrame(step);
+          else { el.textContent = raw; el.removeAttribute('data-counting'); }
+        };
+        requestAnimationFrame(step);
+      });
+    }, { threshold: 0.4 });
+    statNums.forEach(el => countObserver.observe(el));
   }
 
   // ── SCROLL FADE ANIMATION ──

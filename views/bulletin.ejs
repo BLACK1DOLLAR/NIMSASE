@@ -74,7 +74,7 @@
       <div class="bulletin-archive-item bulletin-card fade-in" style="transition-delay:<%= i*0.05 %>s">
         <div class="bulletin-cover">
           <% if (b.coverImage) { %>
-            <img src="<%= b.coverImage %>" alt="<%= b.title %>" style="width:100%;height:100%;object-fit:cover;">
+            <img src="<%= b.coverImage %>" alt="<%= b.title %>" style="width:100%;height:100%;object-fit:cover;" loading="lazy" decoding="async">
           <% } else { %>
           <div class="bulletin-cover-inner">
             <div class="issue"><%= b.issue %></div>

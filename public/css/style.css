@@ -90,12 +90,23 @@ img { max-width: 100%; display: block; }
 }
 
 /* ── NAVBAR ── */
+/* Transparent at scroll top (blends into the dark-green hero), frosted once scrolled */
 .navbar {
   position: sticky; top: 0; z-index: 1000;
-  background: var(--green-deep);
-  border-bottom: 1px solid rgba(201,168,76,0.4);
-  box-shadow: 0 2px 24px rgba(0,0,0,0.35);
+  background: transparent;
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
+  transition: background 0.4s cubic-bezier(0.4,0,0.2,1), border-color 0.4s ease, box-shadow 0.4s ease, backdrop-filter 0.4s ease;
 }
+.navbar.scrolled {
+  background: rgba(0, 24, 0, 0.82);
+  backdrop-filter: blur(14px) saturate(140%);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  border-bottom: 1px solid rgba(201,168,76,0.4);
+  box-shadow: 0 4px 30px rgba(0,0,0,0.35);
+}
+/* Pages/states without a dark hero directly under the nav still need a readable bar */
+.no-hero .navbar { background: var(--green-deep); border-bottom: 1px solid rgba(201,168,76,0.4); box-shadow: 0 2px 24px rgba(0,0,0,0.35); }
 .nav-container {
   max-width: 1400px; margin: 0 auto;
   display: flex; align-items: center;
@@ -215,6 +226,10 @@ img { max-width: 100%; display: block; }
   position: relative; min-height: 88vh;
   background: linear-gradient(155deg, #003800 0%, #005200 50%, #007000 100%);
   display: flex; align-items: center; overflow: hidden;
+}
+/* Subtle depth: native fixed-attachment parallax on capable desktops only (no perf cost on mobile) */
+@media (min-width: 1025px) and (pointer: fine) and (prefers-reduced-motion: no-preference) {
+  .hero[style*="background-image"] { background-attachment: fixed; }
 }
 /* Subtle luxury texture */
 .hero::before {
@@ -902,16 +917,17 @@ td:last-child { white-space: nowrap; }
 }
 .password-toggle {
   position: absolute;
-  right: 0.75rem;
+  right: 0.35rem;
   top: 50%;
   transform: translateY(-50%);
   background: none;
   border: none;
   cursor: pointer;
   color: var(--text-muted);
-  padding: 0.2rem;
+  min-width: 44px; min-height: 44px;
   display: flex;
   align-items: center;
+  justify-content: center;
   transition: var(--transition);
   line-height: 1;
 }
@@ -996,3 +1012,22 @@ td:last-child { white-space: nowrap; }
 .reorder-tab.active { background: var(--green-primary); color: white; border-color: var(--green-primary); }
 .save-order-btn { display: none; }
 .save-order-btn.visible { display: inline-flex; }
+
+/* ── MAGNETIC / ELASTIC BUTTONS ── */
+/* JS sets --mx/--my per pointer position; transform stays GPU-only for 60fps */
+.magnetic { transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); will-change: transform; }
+.magnetic.magnetic-active { transition: transform 0.08s linear; }
+
+/* ── STAT COUNT-UP ── */
+.hero-stat .num[data-counting] { font-variant-numeric: tabular-nums; }
+
+/* ── REDUCED MOTION ── */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  .fade-in { opacity: 1; transform: none; transition: none; }
+  .magnetic { transition: none !important; transform: none !important; }
+  .card:hover, .quick-card:hover, .exec-card:hover, .event-card:hover,
+  .bulletin-card:hover, .news-card:hover, .campaign-card:hover, .resource-card:hover {
+    transform: none;
+  }
+}
