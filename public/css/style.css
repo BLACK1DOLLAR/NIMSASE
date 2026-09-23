@@ -284,6 +284,9 @@ img { max-width: 100%; display: block; }
 .grid-2 { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
 .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(270px, 1fr)); gap: 1.5rem; }
 .grid-4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 1.2rem; }
+/* Action buttons inside a grid must wrap — .btn's white-space:nowrap otherwise forces
+   them wider than their column, clipping text (e.g. admin dashboard Quick Actions) */
+.grid-4 .btn { white-space: normal; text-align: center; line-height: 1.3; }
 
 /* ── RESPONSIVE SPLIT LAYOUTS (collapse to 1 col on tablet/mobile) ── */
 .split-grid   { display: grid; grid-template-columns: 1fr 1.2fr; gap: 4rem; align-items: start; }

@@ -4,10 +4,9 @@
  */
 export function AngularDivider({ fromColor = 'var(--cream)', toColor = 'var(--green-pale)', flip = false }) {
   return (
-    <div className="divider-angular" aria-hidden="true">
+    <div className="divider-angular" aria-hidden="true" style={{ background: fromColor }}>
       <svg viewBox="0 0 100 10" preserveAspectRatio="none" style={{ transform: flip ? 'scaleY(-1)' : 'none' }}>
         <polygon points="0,10 100,0 100,10" fill={toColor} />
-        <polygon points="0,10 0,4 100,0 100,10" fill={fromColor} opacity="0" />
       </svg>
     </div>
   );
