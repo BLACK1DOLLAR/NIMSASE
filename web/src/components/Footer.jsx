@@ -1,8 +1,12 @@
 import { Link } from 'react-router-dom';
 
-export default function Footer({ settings = {}, session }) {
+const FALLBACK_SCHOOLS = ['UNMSA — UNN Enugu', 'NAUMSA — Nnamdi Azikiwe', 'ABSUMSA — Abia State', 'ESUMSA — ESUT Enugu', 'IMSUMSA — Imo State', 'EBSUMSA — Ebonyi State'];
+
+export default function Footer({ settings = {}, session, institutions = [] }) {
   const wa = settings.whatsappNumber || '2348000000000';
   const user = session?.user;
+  const shown = institutions.length ? institutions.slice(0, 6).map(s => `${s.acronym} — ${s.name}`) : FALLBACK_SCHOOLS;
+  const remaining = institutions.length ? Math.max(institutions.length - shown.length, 0) : 7;
   return (
     <footer className="footer">
       <div className="container">
@@ -12,7 +16,7 @@ export default function Footer({ settings = {}, session }) {
               <img src="/logo.jpg" alt="NiMSA SE" width="46" height="46" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--gold)' }} />
               <div>
                 <div style={{ fontFamily: 'var(--font-display)', fontSize: '1rem', fontWeight: 700, color: 'white' }}>NiMSA South East</div>
-                <div style={{ fontSize: '0.65rem', color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Most Exceptional Region</div>
+                <div style={{ fontSize: '0.65rem', color: 'var(--gold)', textTransform: 'uppercase', letterSpacing: '0.12em' }}>Ever Solid Region</div>
               </div>
             </div>
             <p style={{ fontSize: '0.83rem', color: 'rgba(255,255,255,0.55)', lineHeight: 1.85, marginBottom: '1.6rem' }}>
@@ -54,13 +58,8 @@ export default function Footer({ settings = {}, session }) {
           <div>
             <h4 className="footer-heading">Member Schools</h4>
             <ul className="footer-links">
-              <li><Link to="/leadership#schools">UNMSA — UNN Enugu</Link></li>
-              <li><Link to="/leadership#schools">NAUMSA — Nnamdi Azikiwe</Link></li>
-              <li><Link to="/leadership#schools">ABSUMSA — Abia State</Link></li>
-              <li><Link to="/leadership#schools">ESUMSA — ESUT Enugu</Link></li>
-              <li><Link to="/leadership#schools">IMSUMSA — Imo State</Link></li>
-              <li><Link to="/leadership#schools">EBSUMSA — Ebonyi State</Link></li>
-              <li><Link to="/leadership#schools">+ 7 more →</Link></li>
+              {shown.map(label => <li key={label}><Link to="/leadership#schools">{label}</Link></li>)}
+              {remaining > 0 && <li><Link to="/leadership#schools">+ {remaining} more →</Link></li>}
             </ul>
           </div>
           <div>
@@ -79,7 +78,7 @@ export default function Footer({ settings = {}, session }) {
         </div>
         <div className="footer-bottom">
           <p>&copy; {new Date().getFullYear()} NiMSA South East Region — ICT Directorate. All rights reserved.</p>
-          <p style={{ color: 'var(--gold)', fontWeight: 600 }}>"Most Exceptional Region"</p>
+          <p style={{ color: 'var(--gold)', fontWeight: 600 }}>"Ever Solid Region"</p>
         </div>
       </div>
     </footer>

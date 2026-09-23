@@ -1,13 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
 import Magnetic from '../components/Magnetic';
-import { apiGet } from '../lib/api';
 
 export default function Resources() {
-  const [data, setData] = useState(null);
-  useEffect(() => { apiGet('/resources').then(setData); }, []);
+  const data = useLoaderData();
   const settings = data?.settings || {};
 
   const resources = [

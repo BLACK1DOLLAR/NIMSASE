@@ -1,7 +1,7 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
-import { apiGet } from '../lib/api';
 
 const TYPES = ['all', 'Webinar', 'Convention', 'Workshop', 'Campaign'];
 
@@ -30,9 +30,8 @@ function EventCard({ event, i }) {
 }
 
 export default function Events() {
-  const [data, setData] = useState(null);
+  const data = useLoaderData();
   const [type, setType] = useState('all');
-  useEffect(() => { apiGet('/events').then(setData); }, []);
 
   const events = data?.events || [];
   const filtered = type === 'all' ? events : events.filter(e => e.type === type);

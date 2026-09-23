@@ -11,24 +11,37 @@ import Campaigns from './pages/Campaigns';
 import Join from './pages/Join';
 import Contact from './pages/Contact';
 import Acknowledgement from './pages/Acknowledgement';
+import { apiGet } from './lib/api';
+
+// Content data (institutions, executives, events, settings, …) is loaded via route
+// loaders, which vite-react-ssg properly awaits before capturing the prerendered HTML —
+// unlike component-level useEffect, which is NOT guaranteed to resolve before the
+// static snapshot is taken and was silently shipping empty/fallback content on every
+// page. Session/login state stays client-only (fetched in App.jsx) since it's
+// per-visitor and must never be frozen into the static build.
+async function rootLoader() {
+  const [settings, about] = await Promise.all([apiGet('/settings'), apiGet('/about')]);
+  return { settings: settings || {}, institutions: about?.institutions || [] };
+}
 
 export const routes = [
   {
     path: '/',
     element: <App />,
+    loader: rootLoader,
     children: [
-      { index: true, element: <Home /> },
-      { path: 'about', element: <About /> },
-      { path: 'leadership', element: <Leadership /> },
-      { path: 'events', element: <Events /> },
-      { path: 'bulletin', element: <Bulletin /> },
-      { path: 'resources', element: <Resources /> },
-      { path: 'gallery', element: <Gallery /> },
-      { path: 'news', element: <News /> },
-      { path: 'campaigns', element: <Campaigns /> },
-      { path: 'join', element: <Join /> },
-      { path: 'contact', element: <Contact /> },
-      { path: 'acknowledgement', element: <Acknowledgement /> },
+      { index: true, element: <Home />, loader: () => apiGet('/home') },
+      { path: 'about', element: <About />, loader: () => apiGet('/about') },
+      { path: 'leadership', element: <Leadership />, loader: () => apiGet('/leadership') },
+      { path: 'events', element: <Events />, loader: () => apiGet('/events') },
+      { path: 'bulletin', element: <Bulletin />, loader: () => apiGet('/bulletin') },
+      { path: 'resources', element: <Resources />, loader: () => apiGet('/resources') },
+      { path: 'gallery', element: <Gallery />, loader: () => apiGet('/gallery') },
+      { path: 'news', element: <News />, loader: () => apiGet('/news') },
+      { path: 'campaigns', element: <Campaigns />, loader: () => apiGet('/campaigns') },
+      { path: 'join', element: <Join />, loader: () => apiGet('/join') },
+      { path: 'contact', element: <Contact />, loader: () => apiGet('/contact') },
+      { path: 'acknowledgement', element: <Acknowledgement />, loader: () => apiGet('/acknowledgement') },
     ],
   },
 ];

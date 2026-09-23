@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
-import { apiGet } from '../lib/api';
 
 export default function Bulletin() {
-  const [data, setData] = useState(null);
+  const data = useLoaderData();
   const [q, setQ] = useState('');
-  useEffect(() => { apiGet('/bulletin').then(setData); }, []);
 
   const featured = data?.featured;
   const archive = data?.archive || [];

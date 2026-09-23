@@ -747,9 +747,12 @@ td:last-child { white-space: nowrap; }
   .nav-actions .btn-green { display: inline-flex; font-size: 0.75rem; padding: 0.32rem 0.8rem; }
 
   .admin-layout   { grid-template-columns: 1fr; }
+  /* Full-screen takeover on mobile instead of aligning to the topbar's 58px offset —
+     the sidebar has its own header (logo + close), so it never depends on the real
+     topbar staying visible/sticky while the page has scrolled. */
   .admin-sidebar  {
-    position: fixed; top: 58px; left: 0; z-index: 150;
-    height: calc(100vh - 58px); width: 270px;
+    position: fixed; inset: 0; left: 0; z-index: 300;
+    height: 100vh; width: 100%; max-width: 320px;
     transform: translateX(-100%);
   }
   .admin-sidebar.open { transform: translateX(0); }

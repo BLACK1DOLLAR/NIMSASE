@@ -215,6 +215,10 @@ textarea.form-control { min-height: 130px; resize: vertical; }
 @media (max-width: 768px) {
   .container { padding: 0 1.1rem; }
   .section { padding: 4rem 0; }
+  /* Bring the hamburger closer to the true screen edge on phones, matching the
+     site's mobile gutter elsewhere instead of the wider desktop nav padding. */
+  .nav-inner { padding: 0 0.9rem; }
+  .mobile-menu-top { padding: 0 0.9rem; }
   .zoom-hero-content, .page-hero-content { padding: 4.5rem 1.1rem 3rem; }
   .page-hero { min-height: 36vh; }
   .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 2.5rem; }

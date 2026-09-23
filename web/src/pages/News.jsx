@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
-import { apiGet } from '../lib/api';
 
 export default function News() {
-  const [data, setData] = useState(null);
-  useEffect(() => { apiGet('/news').then(setData); }, []);
+  const data = useLoaderData();
   const featured = data?.featured;
   const rest = data?.rest || [];
 
