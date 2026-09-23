@@ -9,16 +9,17 @@ async function models() {
     if (!connectPromise) connectPromise = mongoose.connect(process.env.MONGODB_URI);
     await connectPromise;
   }
-  const root = '../../../models/';
+  // Resolve via process.cwd() (always the `web/` package root when `npm run build` runs),
+  // NOT a relative path from this file's own location — Vite bundles this module into a
+  // temp directory at a different depth than the source, which silently breaks any
+  // hardcoded "../../../" traversal baked into a dynamic import() string.
+  const path = (await import('node:path')).default;
+  const { pathToFileURL } = await import('node:url');
+  const modelsDir = path.resolve(process.cwd(), '..', 'models');
+  const load = (name) => import(/* @vite-ignore */ pathToFileURL(path.join(modelsDir, name)).href);
   const [Executive, Event, Bulletin, News, Institution, Settings, Collaborator, Gallery] = await Promise.all([
-    import(/* @vite-ignore */ root + 'Executive.js'),
-    import(/* @vite-ignore */ root + 'Event.js'),
-    import(/* @vite-ignore */ root + 'Bulletin.js'),
-    import(/* @vite-ignore */ root + 'News.js'),
-    import(/* @vite-ignore */ root + 'Institution.js'),
-    import(/* @vite-ignore */ root + 'Settings.js'),
-    import(/* @vite-ignore */ root + 'Collaborator.js'),
-    import(/* @vite-ignore */ root + 'Gallery.js'),
+    load('Executive.js'), load('Event.js'), load('Bulletin.js'), load('News.js'),
+    load('Institution.js'), load('Settings.js'), load('Collaborator.js'), load('Gallery.js'),
   ]);
   return {
     Executive: Executive.default, Event: Event.default, Bulletin: Bulletin.default, News: News.default,
@@ -39,14 +40,15 @@ const LOADERS = {
   '/settings': async () => getSettings(await models()),
   '/home': async () => {
     const M = await models();
-    const [settings, upcomingEvents, latestBulletin, featuredExecs, latestNews] = await Promise.all([
+    const [settings, upcomingEvents, latestBulletin, featuredExecs, latestNews, institutionsCount] = await Promise.all([
       getSettings(M),
       M.Event.find({ status: 'upcoming' }).sort({ date: 1 }).limit(3),
       M.Bulletin.findOne({ featured: true }),
       M.Executive.find().sort({ order: 1 }).limit(3),
       M.News.find().sort({ createdAt: -1 }).limit(3),
+      M.Institution.countDocuments(),
     ]);
-    return j({ settings, upcomingEvents, latestBulletin, featuredExecs, latestNews });
+    return j({ settings, upcomingEvents, latestBulletin, featuredExecs, latestNews, institutionsCount });
   },
   '/about': async () => {
     const M = await models();

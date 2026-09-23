@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
 import { apiGet } from '../lib/api';
@@ -13,9 +14,9 @@ const BENEFITS = [
 ];
 
 export default function Join() {
-  const [data, setData] = useState(null);
+  const data = useLoaderData();
   const [session, setSession] = useState(null);
-  useEffect(() => { apiGet('/join').then(setData); apiGet('/session').then(setSession); }, []);
+  useEffect(() => { apiGet('/session').then(setSession); }, []);
   const institutions = data?.institutions || [];
   const wa = data?.settings?.whatsappNumber || '';
   const user = session?.user;

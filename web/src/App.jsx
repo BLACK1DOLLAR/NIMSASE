@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLoaderData } from 'react-router-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import Nav from './components/Nav';
 import Footer from './components/Footer';
@@ -9,12 +9,14 @@ import { apiGet } from './lib/api';
 
 export default function App() {
   useLenis();
+  const { settings, institutions } = useLoaderData();
   const [session, setSession] = useState(null);
-  const [settings, setSettings] = useState({});
 
+  // Session is per-visitor and must never be frozen into the static build — always
+  // fetched fresh on the client, unlike settings/institutions which come from the
+  // route loader (correctly baked into the prerendered HTML).
   useEffect(() => {
     apiGet('/session').then(s => s && setSession(s));
-    apiGet('/settings').then(s => s && setSettings(s));
   }, []);
 
   return (
@@ -23,7 +25,7 @@ export default function App() {
       <main>
         <Outlet context={{ settings }} />
       </main>
-      <Footer settings={settings} session={session} />
+      <Footer settings={settings} session={session} institutions={institutions} />
       <WhatsAppFab number={settings.whatsappNumber} />
     </HelmetProvider>
   );

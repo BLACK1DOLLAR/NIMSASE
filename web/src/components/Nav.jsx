@@ -73,7 +73,7 @@ export default function Nav({ session }) {
         {LINKS.map(l => (
           <Link key={l.to} to={l.to} className={pathname === l.to ? 'active' : ''}>{l.label}</Link>
         ))}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '1rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginTop: '1.2rem', paddingTop: '1.2rem', borderTop: '1px solid rgba(201,168,76,0.2)' }}>
           {session?.user ? (
             <>
               {session.isAdmin && <a href="/admin" className="btn btn-gold" style={{ justifyContent: 'center' }}>Admin Dashboard</a>}

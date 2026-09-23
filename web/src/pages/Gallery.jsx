@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import { AnimatePresence, motion } from 'framer-motion';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
-import { apiGet } from '../lib/api';
 
 const CATS = [
   { key: 'all', label: 'All Photos' },
@@ -15,10 +15,9 @@ const CATS = [
 ];
 
 export default function Gallery() {
-  const [data, setData] = useState(null);
+  const data = useLoaderData();
   const [cat, setCat] = useState('all');
   const [lightbox, setLightbox] = useState(null); // index into filtered
-  useEffect(() => { apiGet('/gallery').then(setData); }, []);
 
   const photos = data?.photos || [];
   const filtered = cat === 'all' ? photos : photos.filter(p => p.category === cat);

@@ -183,4 +183,4 @@ Add your GA4 tracking ID to `views/partials/nav.ejs` (in the `<head>` area):
 ---
 
 *NiMSA South East Region — ICT Directorate*  
-*"Most Exceptional Arm" 🏆*
+*"Ever Solid Region" 🏆*

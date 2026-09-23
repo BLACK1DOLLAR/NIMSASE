@@ -24,14 +24,15 @@ router.get('/settings', async (req, res, next) => {
 
 router.get('/home', async (req, res, next) => {
   try {
-    const [settings, upcomingEvents, latestBulletin, featuredExecs, latestNews] = await Promise.all([
+    const [settings, upcomingEvents, latestBulletin, featuredExecs, latestNews, institutionsCount] = await Promise.all([
       getSettings(),
       Event.find({ status: 'upcoming' }).sort({ date: 1 }).limit(3),
       Bulletin.findOne({ featured: true }),
       Executive.find().sort({ order: 1 }).limit(3),
       News.find().sort({ createdAt: -1 }).limit(3),
+      Institution.countDocuments(),
     ]);
-    res.json({ settings, upcomingEvents, latestBulletin, featuredExecs, latestNews });
+    res.json({ settings, upcomingEvents, latestBulletin, featuredExecs, latestNews, institutionsCount });
   } catch (e) { next(e); }
 });
 

@@ -1,12 +1,10 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import ZoomHero from '../components/ZoomHero';
 import Reveal from '../components/Reveal';
 import Magnetic from '../components/Magnetic';
 import StatCounter from '../components/StatCounter';
 import { AngularDivider } from '../components/SectionDivider';
-import { apiGet } from '../lib/api';
 
 const QUICK_ACTIONS = [
   { to: '/leadership', title: 'Meet Executives', sub: 'Regional leadership team', bg: 'var(--green-light)', fg: 'var(--green-primary)' },
@@ -16,9 +14,7 @@ const QUICK_ACTIONS = [
 ];
 
 export default function Home() {
-  const [data, setData] = useState(null);
-
-  useEffect(() => { apiGet('/home').then(setData); }, []);
+  const data = useLoaderData();
 
   const settings = data?.settings || {};
   const events = data?.upcomingEvents || [];
@@ -26,6 +22,7 @@ export default function Home() {
   const news = data?.latestNews || [];
   const bulletin = data?.latestBulletin;
   const heroImages = settings.heroImage ? [settings.heroImage] : [];
+  const schoolCount = data?.institutionsCount != null ? String(data.institutionsCount) : '13';
 
   return (
     <>
@@ -35,7 +32,7 @@ export default function Home() {
 
       <ZoomHero images={heroImages} watermark={settings.watermarkImage} watermarkText={settings.watermarkText}>
         <Reveal as="div" className="eyebrow" style={{ background: 'rgba(201,168,76,0.18)', border: '1px solid rgba(201,168,76,0.6)', color: 'var(--gold)' }}>
-          🏆 Most Exceptional Region of NiMSA
+          🏆 Ever Solid Region of NiMSA
         </Reveal>
         <Reveal delay={0.1}>
           <h1 style={{ color: 'white', maxWidth: 760 }}>
@@ -53,7 +50,7 @@ export default function Home() {
           <Magnetic as={Link} to="/about" className="btn btn-outline btn-lg">Learn More</Magnetic>
         </Reveal>
         <div className="stat-row">
-          {[{ v: '13', l: 'Member Schools' }, { v: '3,500+', l: 'Medical Students' }, { v: '5', l: 'Southeast States' }, { v: '1968', l: 'Est. NiMSA' }].map(s => (
+          {[{ v: schoolCount, l: 'Member Schools' }, { v: '3,500+', l: 'Medical Students' }, { v: '5', l: 'Southeast States' }, { v: '1968', l: 'Est. NiMSA' }].map(s => (
             <div key={s.l}>
               <StatCounter value={s.v} />
               <div className="stat-label">{s.l}</div>
@@ -130,7 +127,7 @@ export default function Home() {
                 The <strong>Nigerian Medical Students' Association (NiMSA)</strong>, founded in <strong>1968</strong>, is the official umbrella body for all medical students in Nigeria and a full member of <strong>IFMSA</strong> — linking our students to global medical exchange opportunities.
               </p>
               <p style={{ marginBottom: '2rem', color: 'var(--text-muted)' }}>
-                The NiMSA South East Region unites <strong>13 member associations</strong> across 5 states, governed by the <strong>Regional Coordinator</strong> and Regional Executive Council (REC).
+                The NiMSA South East Region unites <strong>{schoolCount} member associations</strong> across 5 states, governed by the <strong>Regional Coordinator</strong> and Regional Executive Council (REC).
               </p>
               <Magnetic as={Link} to="/about" className="btn btn-green">Learn More About Us</Magnetic>
             </Reveal>
@@ -138,7 +135,7 @@ export default function Home() {
               <img src="/logo.jpg" alt="NiMSA SE" width="90" height="90" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--gold)', margin: '0 auto 1rem' }} />
               <div style={{ fontSize: '0.9rem', opacity: 0.8 }}>South East Region</div>
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem', marginTop: '1.5rem' }}>
-                {[{ v: '13', l: 'Schools' }, { v: '5', l: 'States' }, { v: '1968', l: 'Founded' }, { v: 'IFMSA', l: 'Member' }].map(s => (
+                {[{ v: schoolCount, l: 'Schools' }, { v: '5', l: 'States' }, { v: '1968', l: 'Founded' }, { v: 'IFMSA', l: 'Member' }].map(s => (
                   <div key={s.l} style={{ background: 'rgba(255,255,255,0.07)', padding: '0.9rem', border: '1px solid rgba(201,168,76,0.2)' }}>
                     <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.6rem', fontWeight: 700, color: 'var(--gold)' }}>{s.v}</div>
                     <div style={{ fontSize: '0.65rem', opacity: 0.65, textTransform: 'uppercase', letterSpacing: '0.08em' }}>{s.l}</div>

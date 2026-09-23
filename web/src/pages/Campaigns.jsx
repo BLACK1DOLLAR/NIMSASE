@@ -1,8 +1,6 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
-import { apiGet } from '../lib/api';
 
 const CAMPAIGNS = [
   { icon: '🤱', title: 'Maternal Mortality Prevention', states: 'All 5 SE States', status: 'Ongoing', desc: 'Community education on maternal health, hospital-based outreaches, and awareness campaigns aimed at reducing the high maternal death rates across the Southeast.', color: '#ad1457' },
@@ -21,8 +19,7 @@ const CAREERS = [
 ];
 
 export default function Campaigns() {
-  const [data, setData] = useState(null);
-  useEffect(() => { apiGet('/campaigns').then(setData); }, []);
+  const data = useLoaderData();
   const wa = data?.settings?.whatsappNumber || '';
 
   return (

@@ -1,11 +1,9 @@
-import { useEffect, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
-import { apiGet } from '../lib/api';
 
 export default function Contact() {
-  const [data, setData] = useState(null);
-  useEffect(() => { apiGet('/contact').then(setData); }, []);
+  const data = useLoaderData();
   const settings = data?.settings || {};
 
   return (

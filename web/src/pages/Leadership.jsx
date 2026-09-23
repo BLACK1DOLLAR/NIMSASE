@@ -1,8 +1,8 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
+import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
-import { apiGet } from '../lib/api';
 
 const CATS = [
   { key: 'rec', label: 'REC' },
@@ -19,9 +19,8 @@ const TITLES = {
 const TYPE_BADGE = { Federal: 'badge-blue', Private: 'badge-purple', State: 'badge-green' };
 
 export default function Leadership() {
-  const [data, setData] = useState(null);
+  const data = useLoaderData();
   const [cat, setCat] = useState('rec');
-  useEffect(() => { apiGet('/leadership').then(setData); }, []);
 
   const executives = data?.executives || [];
   const institutions = data?.institutions || [];
@@ -98,7 +97,7 @@ export default function Leadership() {
         <div className="container">
           <Reveal className="section-header">
             <div className="eyebrow">Member Institutions</div>
-            <h2>13 Schools. One Region.</h2>
+            <h2>{institutions.length || 13} Schools. One Region.</h2>
             <p>All accredited by the Medical and Dental Council of Nigeria (MDCN).</p>
             <div className="gold-line" />
           </Reveal>

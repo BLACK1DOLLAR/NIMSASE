@@ -1,25 +1,23 @@
-import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { useLoaderData, Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
 import Reveal from '../components/Reveal';
 import Magnetic from '../components/Magnetic';
-import { apiGet } from '../lib/api';
 
 const FUNCTIONS = [
   { icon: '🗣️', title: 'Representation & Advocacy', desc: 'We speak on behalf of Southeast medical students at National Executive Council (NEC) meetings — addressing welfare, academic concerns, and policies.' },
   { icon: '🏥', title: 'MAK Health Week & Outreach', desc: 'We organise the MAK NiMSA Health Week — named in honour of Mustapha, Aisha, and Kabiru, three medical students lost in a 2023 boat mishap.' },
   { icon: '📚', title: 'Academic & Professional Development', desc: 'Regional conventions, debate tournaments, quiz competitions, webinars, and workshops prepare students for clinical excellence and public leadership.' },
   { icon: '🌐', title: 'IFMSA Exchange Programmes', desc: "As part of NiMSA's IFMSA membership, Southeast students access international clinical and research exchange programmes across Europe, Asia, and the Americas." },
-  { icon: '🏆', title: 'Regional Convention & Awards', desc: 'The annual South East Regional Convention features academic competitions, the "Face of NiMSA SE" title, leadership elections, and networking across all 13 schools.' },
+  { icon: '🏆', title: 'Regional Convention & Awards', desc: 'The annual South East Regional Convention features academic competitions, the "Face of NiMSA SE" title, leadership elections, and networking across all member schools.' },
   { icon: '⚕️', title: 'Social & Health Advocacy', desc: 'Key campaigns include maternal mortality prevention, climate change awareness, sexual and reproductive health outreach, and the "Medicine and Politics" mentorship programme.' },
 ];
 
 const TYPE_BADGE = { Federal: 'badge-blue', Private: 'badge-purple', State: 'badge-green' };
 
 export default function About() {
-  const [data, setData] = useState(null);
-  useEffect(() => { apiGet('/about').then(setData); }, []);
+  const data = useLoaderData();
   const institutions = data?.institutions || [];
+  const schoolCount = institutions.length || 13;
 
   return (
     <>
@@ -29,7 +27,7 @@ export default function About() {
         <div className="page-hero-content">
           <Reveal className="eyebrow">Who We Are</Reveal>
           <Reveal delay={0.1}><h1>About NiMSA South East Region</h1></Reveal>
-          <Reveal delay={0.2}><p>Founded in 1968. Member of IFMSA. The Most Exceptional Region — uniting 13 medical student associations across five Southeast states.</p></Reveal>
+          <Reveal delay={0.2}><p>Founded in 1968. Member of IFMSA. The Ever Solid Region — uniting {schoolCount} medical student associations across five Southeast states.</p></Reveal>
         </div>
       </div>
 
@@ -46,7 +44,7 @@ export default function About() {
                 As a full member of the <strong>International Federation of Medical Students' Associations (IFMSA)</strong>, NiMSA connects its regional branches — including the South East — to a global network, providing students access to clinical and research exchanges across the world.
               </p>
               <p style={{ marginBottom: '1.5rem', color: 'var(--text-muted)' }}>
-                The <strong>NiMSA South East Region</strong> is one of six geopolitical regional branches, governed by the <strong>Regional Coordinator (RC)</strong> — who serves as a bridge between the National Executive Council and the 13 Medical Student Associations (MSAs) across Abia, Anambra, Ebonyi, Enugu, and Imo states.
+                The <strong>NiMSA South East Region</strong> is one of six geopolitical regional branches, governed by the <strong>Regional Coordinator (RC)</strong> — who serves as a bridge between the National Executive Council and the {schoolCount} Medical Student Associations (MSAs) across Abia, Anambra, Ebonyi, Enugu, and Imo states.
               </p>
               <div className="info-box">
                 <p><strong>Terminology Note:</strong> We are a <em>Region</em>, not a zone. Our governance is led by the <em>Regional Coordinator</em> — not a "president." The RC coordinates and governs the region through the <strong>Regional Executive Council (REC)</strong>.</p>
@@ -54,10 +52,10 @@ export default function About() {
             </Reveal>
             <Reveal delay={0.15} style={{ background: 'linear-gradient(155deg,var(--green-deep),var(--green-primary))', padding: '2.5rem', textAlign: 'center', color: 'white' }}>
               <img src="/logo.jpg" alt="NiMSA SE" width="100" height="100" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--gold)', margin: '0 auto 1rem' }} />
-              <div style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '1.1rem' }}>"Most Exceptional Region"</div>
+              <div style={{ fontFamily: 'var(--font-display)', fontStyle: 'italic', fontSize: '1.1rem' }}>"Ever Solid Region"</div>
               <div style={{ width: 40, height: 1, background: 'var(--gold)', margin: '0.8rem auto' }} />
               <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '0.8rem' }}>
-                {[{ v: '1968', l: 'Founded' }, { v: '13', l: 'MSAs' }, { v: '5', l: 'SE States' }, { v: 'IFMSA', l: 'Global Body' }].map(s => (
+                {[{ v: '1968', l: 'Founded' }, { v: String(schoolCount), l: 'MSAs' }, { v: '5', l: 'SE States' }, { v: 'IFMSA', l: 'Global Body' }].map(s => (
                   <div key={s.l} style={{ background: 'rgba(255,255,255,0.07)', padding: '0.9rem', border: '1px solid rgba(201,168,76,0.2)' }}>
                     <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.4rem', fontWeight: 700, color: 'var(--gold)' }}>{s.v}</div>
                     <div style={{ fontSize: '0.62rem', opacity: 0.55, textTransform: 'uppercase', letterSpacing: '0.1em' }}>{s.l}</div>
@@ -111,7 +109,7 @@ export default function About() {
         <div className="container">
           <Reveal className="section-header">
             <div className="eyebrow">Our Schools</div>
-            <h2>13 Member Associations</h2>
+            <h2>{schoolCount} Member Associations</h2>
             <p>All fully accredited by the Medical and Dental Council of Nigeria (MDCN).</p>
             <div className="gold-line" />
           </Reveal>
@@ -138,7 +136,7 @@ export default function About() {
       <section className="section" style={{ background: 'linear-gradient(155deg,var(--green-deep),var(--green-primary))', textAlign: 'center' }}>
         <div className="container">
           <Reveal>
-            <h2 style={{ color: 'white', marginBottom: '1rem' }}>Join the Most Exceptional Region</h2>
+            <h2 style={{ color: 'white', marginBottom: '1rem' }}>Join the Ever Solid Region</h2>
             <p style={{ color: 'rgba(255,255,255,0.75)', maxWidth: 480, margin: '0 auto 2rem' }}>Be part of a legacy of excellence, advocacy, and compassionate service.</p>
             <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', flexWrap: 'wrap' }}>
               <Magnetic as={Link} to="/join" className="btn btn-gold btn-lg">Join NiMSA SE</Magnetic>
