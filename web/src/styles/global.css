@@ -64,8 +64,8 @@ button { font-family: inherit; }
 .btn-outline-gold { background: transparent; color: var(--gold-bright); border-color: var(--gold); }
 .btn-outline-gold:hover { background: var(--gold); color: var(--green-deep); }
 .btn-green { background: var(--green-primary); color: white; border-color: var(--green-primary); }
-.btn-outline { background: transparent; color: rgba(255,255,255,0.95); border-color: rgba(255,255,255,0.7); }
-.btn-outline:hover { border-color: white; background: rgba(255,255,255,0.08); }
+.btn-outline { background: rgba(255,255,255,0.04); color: white; border: 1.5px solid rgba(255,255,255,0.55); }
+.btn-outline:hover { border-color: var(--gold); background: rgba(201,168,76,0.1); color: var(--gold); }
 .btn-sm { padding: 0.45rem 1rem; font-size: 0.78rem; }
 .btn-lg { padding: 0.95rem 2.3rem; font-size: 0.98rem; }
 .btn-whatsapp { background: #25D366; color: white; border-color: #25D366; }
