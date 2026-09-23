@@ -21,7 +21,7 @@ export default function Magnetic({ children, strength = 0.35, as: Component = mo
     <Component
       ref={ref}
       className={className}
-      style={{ x: springX, y: springY, display: 'inline-block' }}
+      style={{ x: springX, y: springY }}
       onMouseMove={handleMove}
       onMouseLeave={handleLeave}
       {...rest}
