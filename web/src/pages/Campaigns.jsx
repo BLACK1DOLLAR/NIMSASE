@@ -9,6 +9,7 @@ const CAMPAIGNS = [
   { icon: '🩺', title: 'Hypertension & Cardiovascular Screening', states: 'Enugu State', status: 'Upcoming', desc: 'Free blood pressure screenings, lifestyle counselling, and education sessions at markets, churches, and community centres across Enugu State.', color: '#c62828' },
   { icon: '🦟', title: 'Malaria Prevention Drive', states: 'Imo & Ebonyi States', status: 'Completed', desc: 'Mass distribution of insecticide-treated mosquito nets, community education on malaria prevention, and free malaria rapid diagnostic tests.', color: '#00695c' },
   { icon: '🏛️', title: 'Medicine & Politics Mentorship', states: 'All 5 SE States', status: 'Ongoing', desc: 'A mentorship programme preparing medical students for leadership roles in healthcare administration, policy-making, and broader socio-political spaces.', color: '#1565c0' },
+  { icon: '🍎', title: 'Operation 3-for-3', states: 'All 5 SE States', status: 'Ongoing', desc: 'The Student Nutrition Support Initiative — a cross-regional NiMSA collaboration the South East takes part in, aimed at improving nutrition access for medical students under academic and financial strain.', color: '#e65100' },
 ];
 
 const CAREERS = [
