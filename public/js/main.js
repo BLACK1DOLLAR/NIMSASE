@@ -37,7 +37,8 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   // ── MAGNETIC BUTTONS — cursor-aware pull on primary CTAs (fine pointers only) ──
-  if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
+  // Admin pages skip this: dense CRUD tables need buttons to sit still, not drift under the cursor.
+  if (!prefersReducedMotion && !isAdminPage && window.matchMedia('(pointer: fine)').matches) {
     const magnets = document.querySelectorAll('.btn-gold, .btn-outline-gold, .whatsapp-fab');
     magnets.forEach(el => {
       el.classList.add('magnetic');

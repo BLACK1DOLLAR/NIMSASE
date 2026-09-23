@@ -45,6 +45,8 @@
           <label class="form-label">Tenure / Year <span style="color:var(--text-muted);font-weight:400;">(for Past Coordinators)</span></label>
           <input type="text" name="tenure" class="form-control" placeholder="e.g. 2022/2023">
         </div>
+        <div class="form-group">
+          <label class="form-label">WhatsApp Number</label>
           <input type="text" name="whatsapp" class="form-control" placeholder="e.g. 2348012345678">
         </div>
         <div class="form-group">
@@ -72,30 +74,52 @@
   </div>
 </div>
 
-<!-- Executives Table -->
+<!-- Executives — grouped by category, each a collapsible dropdown -->
 <div class="admin-card">
   <div class="admin-card-header">
     <h3>All Executives (<%= executives.length %>)</h3>
   </div>
   <div class="admin-card-body" style="padding:0;">
-    <% executives.forEach((exec, i) => { %>
-    <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--border);background:<%= i%2===0?'white':'var(--green-pale)' %>;">
-      <div style="display:flex;align-items:center;gap:0.7rem;flex:1;min-width:160px;">
-        <div style="width:38px;height:38px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;color:var(--green-primary);flex-shrink:0;border:1px solid var(--border);"><%= exec.name.charAt(0) %></div>
-        <div style="min-width:0;">
-          <div style="font-weight:700;font-size:0.88rem;color:var(--green-deep);"><%= exec.name %></div>
-          <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;"><%= exec.position %></div>
-          <div style="font-size:0.7rem;color:var(--text-muted);"><%= exec.school %></div>
+    <%
+      const execGroups = [
+        { key: 'coordinator',        label: 'Regional Coordinator (Current)', members: executives.filter(e => e.category === 'coordinator') },
+        { key: 'rec',                label: 'REC Members',                    members: executives.filter(e => e.category === 'rec') },
+        { key: 'school-president',   label: 'MSA Presidents',                 members: executives.filter(e => e.category === 'school-president').sort((a,b) => (a.school||'').localeCompare(b.school||'')) },
+        { key: 'standing-committee', label: 'Standing Committee Reps',        members: executives.filter(e => e.category === 'standing-committee') },
+        { key: 'past-coordinator',   label: 'Past Regional Coordinators',     members: executives.filter(e => e.category === 'past-coordinator') },
+      ];
+      const groupBadge = { coordinator: 'badge-gold', rec: 'badge-green', 'school-president': 'badge-blue', 'standing-committee': 'badge-purple', 'past-coordinator': 'badge-orange' };
+    %>
+    <% execGroups.forEach(group => { %>
+    <details class="admin-exec-group" <%= group.key === 'coordinator' || group.key === 'rec' ? 'open' : '' %>>
+      <summary>
+        <span><%= group.label %></span>
+        <span class="badge <%= groupBadge[group.key] %>"><%= group.members.length %></span>
+      </summary>
+      <div class="admin-exec-group-body">
+        <% if (!group.members.length) { %>
+        <div style="padding:1.2rem;color:var(--text-muted);font-size:0.85rem;">No one in this category yet.</div>
+        <% } %>
+        <% group.members.forEach((exec, i) => { %>
+        <div style="display:flex;flex-wrap:wrap;align-items:center;gap:0.8rem;padding:1rem 1.2rem;border-bottom:1px solid var(--border);background:<%= i%2===0?'white':'var(--green-pale)' %>;">
+          <div style="display:flex;align-items:center;gap:0.7rem;flex:1;min-width:160px;">
+            <div style="width:38px;height:38px;border-radius:50%;background:var(--green-light);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.85rem;color:var(--green-primary);flex-shrink:0;border:1px solid var(--border);"><%= exec.name.charAt(0) %></div>
+            <div style="min-width:0;">
+              <div style="font-weight:700;font-size:0.88rem;color:var(--green-deep);"><%= exec.name %></div>
+              <div style="font-size:0.75rem;color:var(--text-muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px;"><%= exec.category === 'past-coordinator' && exec.tenure ? exec.tenure + ' ' + exec.position : exec.position %></div>
+              <div style="font-size:0.7rem;color:var(--text-muted);"><%= exec.school %></div>
+            </div>
+          </div>
+          <div style="display:flex;gap:0.4rem;flex-shrink:0;">
+            <a href="/admin/executives/<%= exec._id %>/edit" class="btn btn-sm btn-outline-gold">Edit</a>
+            <form action="/admin/executives/<%= exec._id %>/delete" method="POST" style="display:inline;">
+              <button type="submit" class="btn btn-sm btn-danger" data-confirm="Delete <%= exec.name %>?">Delete</button>
+            </form>
+          </div>
         </div>
+        <% }) %>
       </div>
-      <span class="badge <%= exec.category==='coordinator'?'badge-gold':exec.category==='rec'?'badge-green':'badge-blue' %>" style="flex-shrink:0;"><%= exec.category %></span>
-      <div style="display:flex;gap:0.4rem;flex-shrink:0;">
-        <a href="/admin/executives/<%= exec._id %>/edit" class="btn btn-sm btn-outline-gold">Edit</a>
-        <form action="/admin/executives/<%= exec._id %>/delete" method="POST" style="display:inline;">
-          <button type="submit" class="btn btn-sm btn-danger" data-confirm="Delete <%= exec.name %>?">Delete</button>
-        </form>
-      </div>
-    </div>
+    </details>
     <% }) %>
   </div>
 </div>

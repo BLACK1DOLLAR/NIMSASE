@@ -1,5 +1,8 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { overflow-x: hidden; scroll-padding-top: 90px; }
+/* overflow-x: hidden on html/body is a known cause of position:fixed drifting during
+   momentum scroll on mobile Safari/Chrome (the nav + portal mobile menu are both fixed).
+   `clip` prevents horizontal overflow without that side effect; `hidden` is the fallback. */
+html { overflow-x: hidden; overflow-x: clip; scroll-padding-top: 90px; }
 /* Any anchor target (e.g. #schools) clears the fixed nav instead of hiding under it */
 [id] { scroll-margin-top: 90px; }
 body {
@@ -8,6 +11,7 @@ body {
   background: var(--cream);
   line-height: 1.75;
   overflow-x: hidden;
+  overflow-x: clip;
 }
 h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.12; color: var(--green-deep); }
 h1 { font-size: clamp(2.4rem, 6vw, 5.6rem); font-weight: 600; letter-spacing: -0.015em; }
@@ -87,7 +91,9 @@ button { font-family: inherit; }
 .nav-links { display: flex; align-items: center; gap: 0.2rem; flex: 1; list-style: none; }
 .nav-links a { padding: 0.5rem 0.7rem; font-size: 0.8rem; font-weight: 500; color: rgba(255,255,255,0.82); white-space: nowrap; position: relative; }
 .nav-links a:hover, .nav-links a.active { color: var(--gold); }
-.nav-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; margin-left: 0.8rem; }
+/* margin-left:auto pushes actions+hamburger to the far right regardless of whether
+   .nav-links is visible (it collapses out of flex flow under 1024px) */
+.nav-actions { display: flex; align-items: center; gap: 0.6rem; flex-shrink: 0; margin-left: auto; }
 .nav-user {
   display: flex; align-items: center; gap: 0.4rem;
   font-size: 0.78rem; color: rgba(255,255,255,0.88);
@@ -99,9 +105,18 @@ button { font-family: inherit; }
   background: var(--gold); color: var(--green-deep);
   padding: 0.1rem 0.4rem; border-radius: 4px; letter-spacing: 0.05em;
 }
-.nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0.5rem; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
-.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--gold); }
-.mobile-menu { position: fixed; inset: 72px 0 0 0; background: var(--green-deep); z-index: 999; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.3rem; overflow-y: auto; }
+.nav-hamburger { display: none; flex-direction: column; gap: 5px; background: none; border: none; cursor: pointer; padding: 0.5rem; min-width: 44px; min-height: 44px; align-items: center; justify-content: center; flex-shrink: 0; }
+.nav-hamburger span { display: block; width: 22px; height: 2px; background: var(--gold); transition: transform 0.25s ease, opacity 0.25s ease; }
+
+/* Portal-rendered mobile menu — lives directly on <body>, fully independent of the
+   nav's own stacking context / backdrop-filter, so it can never fail to display or
+   get clipped by an ancestor. */
+.mobile-menu { position: fixed; inset: 0; background: var(--green-deep); z-index: 10000; display: flex; flex-direction: column; }
+.mobile-menu-top { display: flex; align-items: center; height: 72px; padding: 0 1.5rem; border-bottom: 1px solid rgba(201,168,76,0.15); flex-shrink: 0; }
+.mobile-menu-top .nav-hamburger { margin-left: auto; }
+.mobile-menu-body { flex: 1; overflow-y: auto; padding: 1.5rem; display: flex; flex-direction: column; gap: 0.3rem; -webkit-overflow-scrolling: touch; }
+.mobile-menu-user { display: flex; align-items: center; gap: 0.7rem; padding: 0.2rem 0 1rem; border-bottom: 1px solid rgba(201,168,76,0.2); margin-bottom: 0.6rem; }
+.mobile-menu-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(201,168,76,0.15); border: 1px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; color: var(--gold); flex-shrink: 0; }
 .mobile-menu a { padding: 0.9rem 0.2rem; color: rgba(255,255,255,0.85); font-size: 1rem; font-weight: 500; border-bottom: 1px solid rgba(255,255,255,0.06); }
 
 @media (max-width: 1024px) {
@@ -205,7 +220,10 @@ textarea.form-control { min-height: 130px; resize: vertical; }
   .stat-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.4rem; margin-top: 2.5rem; }
   .footer-grid { grid-template-columns: 1fr 1fr; gap: 1.8rem; }
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
+  /* Quick-action style icon cards read better as a compact 2-up grid than full-width stacks */
+  .grid-4 { grid-template-columns: 1fr 1fr; gap: 0.9rem; }
 }
 @media (max-width: 480px) {
   .footer-grid { grid-template-columns: 1fr; }
+  .grid-4 { gap: 0.7rem; }
 }

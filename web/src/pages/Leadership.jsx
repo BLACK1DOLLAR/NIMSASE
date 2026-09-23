@@ -74,10 +74,11 @@ export default function Leadership() {
                   <div style={{ margin: '0.3rem 0' }}>
                     {exec.category === 'coordinator' ? <span className="badge badge-gold">{exec.position}</span>
                       : exec.category === 'standing-committee' ? <span className="badge badge-purple">{exec.position}</span>
-                        : <span style={{ color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.position}</span>}
+                        : exec.category === 'past-coordinator' ? <span style={{ color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.tenure ? `${exec.tenure} ${exec.position}` : exec.position}</span>
+                          : <span style={{ color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.position}</span>}
                   </div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>{exec.school}</div>
-                  {exec.tenure && <div style={{ marginBottom: '0.5rem' }}><span className="badge badge-blue">📅 {exec.tenure}</span></div>}
+                  {exec.tenure && exec.category !== 'past-coordinator' && <div style={{ marginBottom: '0.5rem' }}><span className="badge badge-blue">📅 {exec.tenure}</span></div>}
                   {exec.bio && !isVacant && <p style={{ fontSize: '0.83rem', color: 'var(--text-body)', padding: '0 1.3rem', marginBottom: '1rem' }}>{exec.bio}</p>}
                   {!isVacant && (exec.whatsapp || exec.email) && (
                     <div style={{ padding: '0.9rem 1.3rem', borderTop: '1px solid var(--green-light)', display: 'flex', gap: '0.5rem', justifyContent: 'center' }}>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
 
 const LINKS = [
@@ -18,7 +19,10 @@ const LINKS = [
 export default function Nav({ session }) {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [mounted, setMounted] = useState(false);
   const { pathname } = useLocation();
+
+  useEffect(() => { setMounted(true); }, []);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 40);
@@ -28,6 +32,64 @@ export default function Nav({ session }) {
   }, []);
 
   useEffect(() => { setOpen(false); }, [pathname]);
+
+  // Lock background scroll while the mobile menu is open (also stops Lenis from
+  // continuing to smooth-scroll the page underneath the overlay).
+  useEffect(() => {
+    if (open) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      return () => { document.body.style.overflow = prev; };
+    }
+  }, [open]);
+
+  const menu = (
+    <div className="mobile-menu">
+      <div className="mobile-menu-top">
+        <Link to="/" className="nav-logo">
+          <img src="/logo.jpg" alt="NiMSA South East Region" width="40" height="40" />
+          <span className="nav-logo-text">
+            <span className="nav-logo-name">NiMSA</span>
+            <span className="nav-logo-sub">South East Region</span>
+          </span>
+        </Link>
+        <button className="nav-hamburger open" aria-label="Close menu" onClick={() => setOpen(false)}>
+          <span style={{ transform: 'rotate(45deg) translate(4px,4px)' }} />
+          <span style={{ opacity: 0 }} />
+          <span style={{ transform: 'rotate(-45deg) translate(4px,-4px)' }} />
+        </button>
+      </div>
+      <div className="mobile-menu-body">
+        {session?.user && (
+          <div className="mobile-menu-user">
+            <div className="mobile-menu-avatar">{session.user.name?.charAt(0)}</div>
+            <div>
+              <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>{session.user.name}</div>
+              <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>{session.user.email}</div>
+            </div>
+            {session.isAdmin && <span className="admin-badge" style={{ marginLeft: 'auto' }}>Admin</span>}
+          </div>
+        )}
+        {LINKS.map(l => (
+          <Link key={l.to} to={l.to} className={pathname === l.to ? 'active' : ''}>{l.label}</Link>
+        ))}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '1rem' }}>
+          {session?.user ? (
+            <>
+              {session.isAdmin && <a href="/admin" className="btn btn-gold" style={{ justifyContent: 'center' }}>Admin Dashboard</a>}
+              <a href="/auth/change-password" className="btn btn-outline" style={{ justifyContent: 'center' }}>Change Password</a>
+              <a href="/auth/logout" className="btn btn-outline" style={{ justifyContent: 'center' }}>Logout</a>
+            </>
+          ) : (
+            <>
+              <a href="/auth/login" className="btn btn-outline" style={{ justifyContent: 'center' }}>Login</a>
+              <Link to="/join" className="btn btn-gold" style={{ justifyContent: 'center' }}>Join NiMSA SE</Link>
+            </>
+          )}
+        </div>
+      </div>
+    </div>
+  );
 
   return (
     <nav className={`nav${scrolled ? ' scrolled' : ''}`}>
@@ -62,45 +124,15 @@ export default function Nav({ session }) {
             </>
           )}
         </div>
-        <button className="nav-hamburger" aria-label="Toggle menu" onClick={() => setOpen(o => !o)}>
+        <button className={`nav-hamburger${open ? ' open' : ''}`} aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen(o => !o)}>
           <span style={open ? { transform: 'rotate(45deg) translate(4px,4px)' } : undefined} />
           <span style={open ? { opacity: 0 } : undefined} />
           <span style={open ? { transform: 'rotate(-45deg) translate(4px,-4px)' } : undefined} />
         </button>
       </div>
-      {open && (
-        <div className="mobile-menu">
-          {session?.user && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '0.7rem', padding: '0.2rem 0 1rem', borderBottom: '1px solid rgba(201,168,76,0.2)', marginBottom: '0.6rem' }}>
-              <div style={{ width: 34, height: 34, borderRadius: '50%', background: 'rgba(201,168,76,0.15)', border: '1px solid var(--gold)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.85rem', fontWeight: 700, color: 'var(--gold)', flexShrink: 0 }}>
-                {session.user.name?.charAt(0)}
-              </div>
-              <div>
-                <div style={{ fontSize: '0.85rem', fontWeight: 600, color: 'white' }}>{session.user.name}</div>
-                <div style={{ fontSize: '0.7rem', color: 'rgba(255,255,255,0.5)' }}>{session.user.email}</div>
-              </div>
-              {session.isAdmin && <span className="admin-badge" style={{ marginLeft: 'auto' }}>Admin</span>}
-            </div>
-          )}
-          {LINKS.map(l => (
-            <Link key={l.to} to={l.to} className={pathname === l.to ? 'active' : ''}>{l.label}</Link>
-          ))}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem', marginTop: '1rem' }}>
-            {session?.user ? (
-              <>
-                {session.isAdmin && <a href="/admin" className="btn btn-gold" style={{ justifyContent: 'center' }}>Admin Dashboard</a>}
-                <a href="/auth/change-password" className="btn btn-outline" style={{ justifyContent: 'center' }}>Change Password</a>
-                <a href="/auth/logout" className="btn btn-outline" style={{ justifyContent: 'center' }}>Logout</a>
-              </>
-            ) : (
-              <>
-                <a href="/auth/login" className="btn btn-outline" style={{ justifyContent: 'center' }}>Login</a>
-                <Link to="/join" className="btn btn-gold" style={{ justifyContent: 'center' }}>Join NiMSA SE</Link>
-              </>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Rendered via portal directly on <body> so it can never be affected by the
+          nav's own backdrop-filter/stacking context or get clipped by an ancestor. */}
+      {mounted && open && createPortal(menu, document.body)}
     </nav>
   );
 }
