@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import { AnimatePresence, motion } from 'framer-motion';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
@@ -15,7 +15,7 @@ const CATS = [
 ];
 
 export default function Gallery() {
-  const data = useLoaderData();
+  const data = useLiveData('/gallery');
   const [cat, setCat] = useState('all');
   const [lightbox, setLightbox] = useState(null); // index into filtered
 

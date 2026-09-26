@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import { apiGet } from '../lib/api';
 
@@ -14,7 +14,7 @@ const BENEFITS = [
 ];
 
 export default function Join() {
-  const data = useLoaderData();
+  const data = useLiveData('/join');
   const [session, setSession] = useState(null);
   useEffect(() => { apiGet('/session').then(setSession); }, []);
   const institutions = data?.institutions || [];

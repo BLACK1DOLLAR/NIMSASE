@@ -1,10 +1,10 @@
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
 
 export default function Acknowledgement() {
-  const data = useLoaderData();
+  const data = useLiveData('/acknowledgement');
   const settings = data?.settings || {};
   const collaborators = data?.collaborators || [];
 

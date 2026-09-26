@@ -1,10 +1,10 @@
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
 
 export default function News() {
-  const data = useLoaderData();
+  const data = useLiveData('/news');
   const featured = data?.featured;
   const rest = data?.rest || [];
 

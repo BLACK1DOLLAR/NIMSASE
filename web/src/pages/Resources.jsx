@@ -1,10 +1,11 @@
-import { useLoaderData, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import Magnetic from '../components/Magnetic';
 
 export default function Resources() {
-  const data = useLoaderData();
+  const data = useLiveData('/resources');
   const settings = data?.settings || {};
 
   const resources = [

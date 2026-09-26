@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
 
@@ -19,7 +19,7 @@ const TITLES = {
 const TYPE_BADGE = { Federal: 'badge-blue', Private: 'badge-purple', State: 'badge-green' };
 
 export default function Leadership() {
-  const data = useLoaderData();
+  const data = useLiveData('/leadership');
   const [cat, setCat] = useState('rec');
 
   const executives = data?.executives || [];

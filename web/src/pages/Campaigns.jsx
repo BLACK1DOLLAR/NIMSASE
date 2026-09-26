@@ -1,5 +1,6 @@
-import { useLoaderData, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 
 const CAMPAIGNS = [
@@ -20,7 +21,7 @@ const CAREERS = [
 ];
 
 export default function Campaigns() {
-  const data = useLoaderData();
+  const data = useLiveData('/campaigns');
   const wa = data?.settings?.whatsappNumber || '';
 
   return (

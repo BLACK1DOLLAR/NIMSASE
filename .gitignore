@@ -5,3 +5,4 @@ node_modules/
 data/db.json
 web/dist/
 web/.vite-react-ssg-temp/
+Reference/

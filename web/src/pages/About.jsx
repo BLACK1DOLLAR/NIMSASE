@@ -1,5 +1,6 @@
-import { useLoaderData, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import Magnetic from '../components/Magnetic';
 
@@ -15,7 +16,7 @@ const FUNCTIONS = [
 const TYPE_BADGE = { Federal: 'badge-blue', Private: 'badge-purple', State: 'badge-green' };
 
 export default function About() {
-  const data = useLoaderData();
+  const data = useLiveData('/about');
   const institutions = data?.institutions || [];
   const schoolCount = institutions.length || 13;
 

@@ -1,11 +1,11 @@
 import { useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 import AdminNotice from '../components/AdminNotice';
 
 export default function Bulletin() {
-  const data = useLoaderData();
+  const data = useLiveData('/bulletin');
   const [q, setQ] = useState('');
 
   const featured = data?.featured;

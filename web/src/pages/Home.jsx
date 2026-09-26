@@ -1,5 +1,6 @@
-import { useLoaderData, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import ZoomHero from '../components/ZoomHero';
 import Reveal from '../components/Reveal';
 import Magnetic from '../components/Magnetic';
@@ -14,7 +15,7 @@ const QUICK_ACTIONS = [
 ];
 
 export default function Home() {
-  const data = useLoaderData();
+  const data = useLiveData('/home');
 
   const settings = data?.settings || {};
   const events = data?.upcomingEvents || [];
@@ -153,7 +154,7 @@ export default function Home() {
           <div className="container">
             <Reveal className="section-header">
               <div className="eyebrow">Our Leadership</div>
-              <h2>Regional Executive Council</h2>
+              <h2>Executive Council</h2>
               <div className="gold-line" />
             </Reveal>
             <div className="grid-3">
