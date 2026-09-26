@@ -33,7 +33,13 @@
   --radius-control: 6px;
   --radius-pill: 100px;
 
-  --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  /* Never `all`: framer-motion drives transform/opacity inline every frame, and a CSS
+     transition on those same properties keeps restarting — elements rise, stall a few px
+     short, then drift into place late. Hover lifts use `translate`, which composes with
+     framer's transform instead of competing with it. */
+  --transition: color 0.3s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    border-color 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s cubic-bezier(0.4, 0, 0.2, 1),
+    translate 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   --ease-elastic: cubic-bezier(0.34, 1.56, 0.64, 1);
 
   --font-display: 'Fraunces', Georgia, serif;

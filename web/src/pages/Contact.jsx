@@ -1,9 +1,9 @@
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 
 export default function Contact() {
-  const data = useLoaderData();
+  const data = useLiveData('/contact');
   const settings = data?.settings || {};
 
   return (

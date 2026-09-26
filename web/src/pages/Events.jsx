@@ -1,6 +1,6 @@
 import { useMemo, useState } from 'react';
-import { useLoaderData } from 'react-router-dom';
 import { Helmet } from 'react-helmet-async';
+import useLiveData from '../lib/useLiveData';
 import Reveal from '../components/Reveal';
 
 const TYPES = ['all', 'Webinar', 'Convention', 'Workshop', 'Campaign'];
@@ -30,7 +30,7 @@ function EventCard({ event, i }) {
 }
 
 export default function Events() {
-  const data = useLoaderData();
+  const data = useLiveData('/events');
   const [type, setType] = useState('all');
 
   const events = data?.events || [];

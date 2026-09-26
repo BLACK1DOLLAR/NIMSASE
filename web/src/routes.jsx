@@ -11,18 +11,16 @@ import Campaigns from './pages/Campaigns';
 import Join from './pages/Join';
 import Contact from './pages/Contact';
 import Acknowledgement from './pages/Acknowledgement';
-import { apiGet } from './lib/api';
+import { apiGet, loadRoot } from './lib/api';
 
 // Content data (institutions, executives, events, settings, …) is loaded via route
 // loaders, which vite-react-ssg properly awaits before capturing the prerendered HTML —
 // unlike component-level useEffect, which is NOT guaranteed to resolve before the
 // static snapshot is taken and was silently shipping empty/fallback content on every
-// page. Session/login state stays client-only (fetched in App.jsx) since it's
-// per-visitor and must never be frozen into the static build.
-async function rootLoader() {
-  const [settings, about] = await Promise.all([apiGet('/settings'), apiGet('/about')]);
-  return { settings: settings || {}, institutions: about?.institutions || [] };
-}
+// page. Pages then refresh from the live API via useLiveData, since on the client these
+// loaders are replaced with the build-time snapshot. Session/login state stays
+// client-only (fetched in App.jsx) since it's per-visitor.
+const rootLoader = async () => (await loadRoot()) || { settings: {}, institutions: [] };
 
 export const routes = [
   {
