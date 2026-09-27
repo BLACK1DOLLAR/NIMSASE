@@ -20,6 +20,18 @@
   --border:         #c5ddc5;
   --border-gold:    rgba(201,168,76,0.35);
 
+  /* Role tokens — these flip in dark mode. The brand tokens above (--green-deep,
+     --green-primary, --gold-dark) stay fixed because they also paint the dark hero/footer
+     panels and the text on gold buttons, which must look the same in both themes. */
+  --surface:        #ffffff;
+  --heading:        var(--green-deep);
+  --link:           var(--green-primary);
+  --gold-text:      var(--gold-dark);
+  --badge-blue-bg: #e3f2fd;   --badge-blue-fg: #1565c0;
+  --badge-purple-bg: #f3e5f5; --badge-purple-fg: #6a1b9a;
+  --badge-orange-bg: #fff3e0; --badge-orange-fg: #e65100;
+  color-scheme: light;
+
   --shadow-xs:  0 1px 4px rgba(0,50,0,0.07);
   --shadow-sm:  0 2px 12px rgba(0,50,0,0.09);
   --shadow-md:  0 6px 24px rgba(0,50,0,0.13);
@@ -44,4 +56,37 @@
 
   --font-display: 'Fraunces', Georgia, serif;
   --font-body:    'Inter', system-ui, -apple-system, sans-serif;
+}
+
+/* Dark theme: data-theme is set on <html> before first paint by the inline script in
+   index.html (saved choice, else the OS setting), so there's no light flash. */
+:root[data-theme="dark"] {
+  --cream:          #0b130b;   /* page background */
+  --surface:        #121d12;   /* cards, forms */
+  --green-pale:     #0f1a0f;   /* alternate section background */
+  --green-light:    #1b2e1b;   /* tinted chips, avatar placeholders */
+  --gold-light:     #2a2410;
+  --gold-subtle:    #2a2410;
+  --text-dark:      #eef3ec;
+  --text-body:      #cfdccc;
+  --text-muted:     #93a891;
+  --border:         #243524;
+  --border-gold:    rgba(212,175,55,0.35);
+  --heading:        #eef3ec;
+  --link:           #7fcf8a;
+  --gold-text:      #d9b44a;
+  --badge-blue-bg: #11263a;   --badge-blue-fg: #8cc4f5;
+  --badge-purple-bg: #2a1733; --badge-purple-fg: #d3a4e8;
+  --badge-orange-bg: #33200d; --badge-orange-fg: #f5b27a;
+  --shadow-xs:  0 1px 4px rgba(0,0,0,0.35);
+  --shadow-sm:  0 2px 12px rgba(0,0,0,0.4);
+  --shadow-md:  0 6px 24px rgba(0,0,0,0.45);
+  --shadow-lg:  0 12px 48px rgba(0,0,0,0.5);
+  --shadow-xl:  0 24px 80px rgba(0,0,0,0.55);
+  color-scheme: dark;
+}
+
+/* Brief colour cross-fade while switching themes (class added for ~400ms by the toggle) */
+.theme-switching, .theme-switching * {
+  transition: background-color 0.35s ease, color 0.35s ease, border-color 0.35s ease, box-shadow 0.35s ease !important;
 }

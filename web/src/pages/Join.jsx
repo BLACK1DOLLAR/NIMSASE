@@ -39,10 +39,10 @@ export default function Join() {
               <h2 style={{ marginBottom: '1.5rem' }}>Why Join NiMSA SE?</h2>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {BENEFITS.map(b => (
-                  <div key={b.title} style={{ display: 'flex', gap: '1rem', padding: '1rem', background: 'white', border: '1px solid var(--border)' }}>
+                  <div key={b.title} style={{ display: 'flex', gap: '1rem', padding: '1rem', background: 'var(--surface)', border: '1px solid var(--border)' }}>
                     <div style={{ fontSize: '1.5rem' }}>{b.icon}</div>
                     <div>
-                      <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--green-deep)' }}>{b.title}</div>
+                      <div style={{ fontWeight: 700, fontSize: '0.9rem', color: 'var(--heading)' }}>{b.title}</div>
                       <div style={{ fontSize: '0.82rem', color: 'var(--text-muted)' }}>{b.desc}</div>
                     </div>
                   </div>
@@ -52,7 +52,7 @@ export default function Join() {
 
             <Reveal delay={0.15}>
               {user ? (
-                <div style={{ background: 'white', padding: '2.5rem', boxShadow: 'var(--shadow-xl)' }}>
+                <div style={{ background: 'var(--surface)', padding: '2.5rem', boxShadow: 'var(--shadow-xl)' }}>
                   <h3 style={{ marginBottom: '0.4rem' }}>Member Registration Form</h3>
                   <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)', marginBottom: '1.5rem' }}>Complete your official NiMSA SE membership registration.</p>
                   <form action="https://formspree.io/f/xvzwjpqd" method="POST">
@@ -92,7 +92,7 @@ export default function Join() {
                   </form>
                 </div>
               ) : (
-                <div style={{ background: 'white', padding: '2.5rem', textAlign: 'center', boxShadow: 'var(--shadow-xl)' }}>
+                <div style={{ background: 'var(--surface)', padding: '2.5rem', textAlign: 'center', boxShadow: 'var(--shadow-xl)' }}>
                   <div style={{ width: 70, height: 70, borderRadius: '50%', background: 'var(--green-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1.5rem', fontSize: '2rem' }}>👋</div>
                   <h3 style={{ marginBottom: '0.8rem' }}>Create Your Account First</h3>
                   <p style={{ color: 'var(--text-muted)', fontSize: '0.88rem', marginBottom: '2rem' }}>To submit your membership registration, you'll need a NiMSA SE account. It only takes a minute!</p>

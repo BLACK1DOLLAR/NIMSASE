@@ -78,7 +78,7 @@ export default function About() {
           </Reveal>
           <div className="grid-2" style={{ gap: '1.5rem' }}>
             {FUNCTIONS.map((fn, i) => (
-              <Reveal key={fn.title} delay={i * 0.06} style={{ background: 'white', padding: '1.6rem', borderLeft: '3px solid var(--gold)' }}>
+              <Reveal key={fn.title} delay={i * 0.06} style={{ background: 'var(--surface)', padding: '1.6rem', borderLeft: '3px solid var(--gold)' }}>
                 <div style={{ fontSize: '1.5rem', marginBottom: '0.7rem' }}>{fn.icon}</div>
                 <h3 style={{ fontSize: '1rem', marginBottom: '0.6rem' }}>{fn.title}</h3>
                 <p style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>{fn.desc}</p>
@@ -122,7 +122,7 @@ export default function About() {
                   <span className={`badge ${TYPE_BADGE[s.type] || 'badge-green'}`}>{s.type}</span>
                 </div>
                 <div style={{ padding: '1rem 1.2rem' }}>
-                  <div style={{ fontWeight: 700, color: 'var(--green-deep)', fontSize: '0.88rem', marginBottom: '0.3rem' }}>{s.name}</div>
+                  <div style={{ fontWeight: 700, color: 'var(--heading)', fontSize: '0.88rem', marginBottom: '0.3rem' }}>{s.name}</div>
                   <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                     <span className="badge badge-gold">{s.state}</span>
                     <span className={`badge ${s.status === 'Fully Accredited' ? 'badge-green' : 'badge-orange'}`}>{s.status}</span>

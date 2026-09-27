@@ -8,10 +8,10 @@ import StatCounter from '../components/StatCounter';
 import { AngularDivider } from '../components/SectionDivider';
 
 const QUICK_ACTIONS = [
-  { to: '/leadership', title: 'Meet Executives', sub: 'Regional leadership team', bg: 'var(--green-light)', fg: 'var(--green-primary)' },
-  { to: '/events', title: 'Upcoming Events', sub: 'Webinars, conventions & more', bg: 'var(--gold-light)', fg: 'var(--gold-dark)' },
-  { to: '/join', title: 'Register Now', sub: 'Become a member today', bg: '#e8f5e9', fg: 'var(--green-primary)' },
-  { to: '/bulletin', title: 'Download Bulletin', sub: 'Monthly newsletter', bg: 'var(--green-light)', fg: 'var(--green-primary)' },
+  { to: '/leadership', title: 'Meet Executives', sub: 'Regional leadership team', bg: 'var(--green-light)', fg: 'var(--link)' },
+  { to: '/events', title: 'Upcoming Events', sub: 'Webinars, conventions & more', bg: 'var(--gold-light)', fg: 'var(--gold-text)' },
+  { to: '/join', title: 'Register Now', sub: 'Become a member today', bg: 'var(--green-light)', fg: 'var(--link)' },
+  { to: '/bulletin', title: 'Download Bulletin', sub: 'Monthly newsletter', bg: 'var(--green-light)', fg: 'var(--link)' },
 ];
 
 export default function Home() {
@@ -59,10 +59,10 @@ export default function Home() {
           ))}
         </div>
       </ZoomHero>
-      <AngularDivider toColor="white" fromColor="var(--green-deep)" />
+      <AngularDivider toColor="var(--surface)" fromColor="var(--green-deep)" />
 
       {/* QUICK ACTIONS */}
-      <section style={{ background: 'white', padding: '2rem 0' }}>
+      <section style={{ background: 'var(--surface)', padding: '2rem 0' }}>
         <div className="container">
           <div className="grid-4">
             {QUICK_ACTIONS.map((a, i) => (
@@ -71,7 +71,7 @@ export default function Home() {
                   <div style={{ width: 52, height: 52, background: a.bg, color: a.fg, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 0.8rem' }}>
                     <svg width="26" height="26" fill="currentColor" viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
                   </div>
-                  <div style={{ fontWeight: 700, color: 'var(--green-deep)', fontSize: '0.9rem' }}>{a.title}</div>
+                  <div style={{ fontWeight: 700, color: 'var(--heading)', fontSize: '0.9rem' }}>{a.title}</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: '0.2rem' }}>{a.sub}</div>
                 </Link>
               </Reveal>
@@ -100,7 +100,7 @@ export default function Home() {
                     <span className="badge badge-gold" style={{ position: 'absolute', top: '0.8rem', right: '0.8rem' }}>{ev.type}</span>
                   </div>
                   <div style={{ padding: '1.2rem' }}>
-                    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--green-deep)', fontSize: '1.05rem', marginBottom: '0.4rem' }}>{ev.title}</div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, color: 'var(--heading)', fontSize: '1.05rem', marginBottom: '0.4rem' }}>{ev.title}</div>
                     <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', marginBottom: '0.7rem' }}>🕐 {ev.time} · 📍 {ev.location}</div>
                     <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)' }}>{ev.description?.slice(0, 100)}...</p>
                   </div>
@@ -163,10 +163,10 @@ export default function Home() {
                   <div style={{ display: 'flex', justifyContent: 'center', margin: '1.8rem auto 1.1rem' }}>
                     {exec.photo
                       ? <img src={exec.photo} alt={exec.name} width="90" height="90" loading="lazy" decoding="async" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--gold)' }} />
-                      : <div style={{ width: 90, height: 90, borderRadius: '50%', border: '2px solid var(--gold)', background: 'var(--green-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--green-primary)' }}>{exec.name.charAt(0)}</div>}
+                      : <div style={{ width: 90, height: 90, borderRadius: '50%', border: '2px solid var(--gold)', background: 'var(--green-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: 'var(--link)' }}>{exec.name.charAt(0)}</div>}
                   </div>
                   <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: '1.1rem' }}>{exec.name}</div>
-                  <div style={{ fontSize: '0.78rem', color: 'var(--gold-dark)', fontWeight: 600, textTransform: 'uppercase', margin: '0.3rem 0' }}>{exec.position}</div>
+                  <div style={{ fontSize: '0.78rem', color: 'var(--gold-text)', fontWeight: 600, textTransform: 'uppercase', margin: '0.3rem 0' }}>{exec.position}</div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>{exec.school}</div>
                   {exec.whatsapp && (
                     <div style={{ padding: '0.9rem', borderTop: '1px solid var(--green-light)' }}>

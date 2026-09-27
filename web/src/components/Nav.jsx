@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { Link, useLocation } from 'react-router-dom';
+import ThemeToggle from './ThemeToggle';
 
 const LINKS = [
   { to: '/', label: 'Home' },
@@ -53,11 +54,14 @@ export default function Nav({ session }) {
             <span className="nav-logo-sub">South East Region</span>
           </span>
         </Link>
-        <button className="nav-hamburger open" aria-label="Close menu" onClick={() => setOpen(false)}>
-          <span style={{ transform: 'rotate(45deg) translate(4px,4px)' }} />
-          <span style={{ opacity: 0 }} />
-          <span style={{ transform: 'rotate(-45deg) translate(4px,-4px)' }} />
-        </button>
+        <div className="mobile-menu-controls">
+          <ThemeToggle />
+          <button className="nav-hamburger open" aria-label="Close menu" onClick={() => setOpen(false)}>
+            <span style={{ transform: 'rotate(45deg) translate(4px,4px)' }} />
+            <span style={{ opacity: 0 }} />
+            <span style={{ transform: 'rotate(-45deg) translate(4px,-4px)' }} />
+          </button>
+        </div>
       </div>
       <div className="mobile-menu-body">
         {session?.user && (
@@ -124,6 +128,7 @@ export default function Nav({ session }) {
             </>
           )}
         </div>
+        <ThemeToggle />
         <button className={`nav-hamburger${open ? ' open' : ''}`} aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen(o => !o)}>
           <span style={open ? { transform: 'rotate(45deg) translate(4px,4px)' } : undefined} />
           <span style={open ? { opacity: 0 } : undefined} />

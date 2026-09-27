@@ -69,7 +69,7 @@ export default function Campaigns() {
                 </div>
                 <div style={{ padding: '1.5rem' }}>
                   <h3 style={{ fontSize: '1rem', marginBottom: '0.35rem' }}>{c.title}</h3>
-                  <div style={{ fontSize: '0.72rem', color: 'var(--gold-dark)', fontWeight: 600, marginBottom: '0.7rem' }}>📍 {c.states}</div>
+                  <div style={{ fontSize: '0.72rem', color: 'var(--gold-text)', fontWeight: 600, marginBottom: '0.7rem' }}>📍 {c.states}</div>
                   <p style={{ fontSize: '0.82rem', color: 'var(--text-muted)', marginBottom: '1rem' }}>{c.desc}</p>
                   <a href={`https://wa.me/${wa}`} target="_blank" rel="noopener" className="btn btn-sm btn-green">Volunteer →</a>
                 </div>

@@ -55,7 +55,7 @@ export default function Leadership() {
               </button>
             ))}
           </div>
-          <h3 style={{ textAlign: 'center', color: 'var(--green-deep)', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>{TITLES[cat]}</h3>
+          <h3 style={{ textAlign: 'center', color: 'var(--heading)', marginBottom: '2rem', fontFamily: 'var(--font-display)' }}>{TITLES[cat]}</h3>
 
           <div className="grid-3">
             {filtered.map((exec, i) => {
@@ -65,16 +65,16 @@ export default function Leadership() {
                   <div style={{ display: 'flex', justifyContent: 'center', margin: '1.8rem auto 1.1rem' }}>
                     {exec.photo && !isVacant
                       ? <img src={exec.photo} alt={exec.name} width="90" height="90" loading="lazy" decoding="async" style={{ borderRadius: '50%', objectFit: 'cover', border: '2px solid var(--gold)' }} />
-                      : <div style={{ width: 90, height: 90, borderRadius: '50%', border: `2px solid ${isVacant ? 'var(--border)' : 'var(--gold)'}`, background: isVacant ? 'var(--border)' : 'var(--green-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: isVacant ? 'var(--text-muted)' : 'var(--green-primary)' }}>{isVacant ? '?' : exec.name.charAt(0)}</div>}
+                      : <div style={{ width: 90, height: 90, borderRadius: '50%', border: `2px solid ${isVacant ? 'var(--border)' : 'var(--gold)'}`, background: isVacant ? 'var(--border)' : 'var(--green-light)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--font-display)', fontSize: '1.8rem', color: isVacant ? 'var(--text-muted)' : 'var(--link)' }}>{isVacant ? '?' : exec.name.charAt(0)}</div>}
                   </div>
-                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: isVacant ? '0.9rem' : '1.1rem', fontStyle: isVacant ? 'italic' : 'normal', color: isVacant ? 'var(--text-muted)' : 'var(--green-deep)' }}>
+                  <div style={{ fontFamily: 'var(--font-display)', fontWeight: 700, fontSize: isVacant ? '0.9rem' : '1.1rem', fontStyle: isVacant ? 'italic' : 'normal', color: isVacant ? 'var(--text-muted)' : 'var(--heading)' }}>
                     {isVacant ? 'Position Vacant' : exec.name}
                   </div>
                   <div style={{ margin: '0.3rem 0' }}>
                     {exec.category === 'coordinator' ? <span className="badge badge-gold">{exec.position}</span>
                       : exec.category === 'standing-committee' ? <span className="badge badge-purple">{exec.position}</span>
-                        : exec.category === 'past-coordinator' ? <span style={{ color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.tenure ? `${exec.tenure} ${exec.position}` : exec.position}</span>
-                          : <span style={{ color: 'var(--gold-dark)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.position}</span>}
+                        : exec.category === 'past-coordinator' ? <span style={{ color: 'var(--gold-text)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.tenure ? `${exec.tenure} ${exec.position}` : exec.position}</span>
+                          : <span style={{ color: 'var(--gold-text)', fontWeight: 600, fontSize: '0.76rem', textTransform: 'uppercase' }}>{exec.position}</span>}
                   </div>
                   <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>{exec.school}</div>
                   {exec.tenure && exec.category !== 'past-coordinator' && <div style={{ marginBottom: '0.5rem' }}><span className="badge badge-blue">📅 {exec.tenure}</span></div>}
@@ -106,7 +106,7 @@ export default function Leadership() {
               <Reveal key={s._id} delay={i * 0.03} className="card">
                 <div style={{ padding: '1.4rem 1.4rem 0' }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.8rem' }}>
-                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--green-deep)' }}>{s.acronym}</div>
+                    <div style={{ fontFamily: 'var(--font-display)', fontSize: '1.3rem', fontWeight: 700, color: 'var(--heading)' }}>{s.acronym}</div>
                     <span className={`badge ${TYPE_BADGE[s.type] || 'badge-green'}`}>{s.type}</span>
                   </div>
                   <div style={{ fontSize: '0.8rem', fontWeight: 600, marginBottom: '0.3rem' }}>{s.assoc}</div>

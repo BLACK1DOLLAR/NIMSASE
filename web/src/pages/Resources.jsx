@@ -9,7 +9,7 @@ export default function Resources() {
   const settings = data?.settings || {};
 
   const resources = [
-    { icon: '📄', title: 'Past Questions', desc: 'Curated past exam questions from all member schools — organised by year, course, and level.', count: '200+ files', link: settings.resPastQuestions || '#', color: '#e8f5e9', iconColor: '#006400' },
+    { icon: '📄', title: 'Past Questions', desc: 'Curated past exam questions from all member schools — organised by year, course, and level.', count: '200+ files', link: settings.resPastQuestions || '#', color: 'var(--green-light)', iconColor: '#006400' },
     { icon: '🩺', title: 'Clinical Guides', desc: 'Step-by-step clinical examination guides, OSCE prep materials, and bedside manuals for clinical-year students.', count: '45+ guides', link: settings.resClinicalGuides || '#', color: '#e3f2fd', iconColor: '#1565c0' },
     { icon: '✈️', title: 'IFMSA Exchange', desc: 'Everything you need to apply for international medical exchanges — documents, deadlines, past participants\' experiences.', count: '12 resources', link: settings.resIFMSA || '#', color: '#fff3e0', iconColor: '#e65100' },
     { icon: '🎓', title: 'Scholarships', desc: 'Locally and internationally available scholarships for medical students.', count: '30+ listings', link: settings.resScholarships || '#', color: '#f3e5f5', iconColor: '#6a1b9a' },
@@ -32,15 +32,15 @@ export default function Resources() {
         <div className="container">
           <div className="grid-3">
             {resources.map((r, i) => (
-              <Reveal key={r.title} delay={i * 0.06}>
-                <a href={r.link} target="_blank" rel="noopener" className="card" style={{ padding: '2rem', textAlign: 'center', display: 'block' }}>
-                  <div style={{ width: 64, height: 64, background: r.color, color: r.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
+              <Reveal key={r.title} delay={i * 0.06} style={{ height: '100%' }}>
+                <a href={r.link} target="_blank" rel="noopener" className="card" style={{ padding: '2rem', textAlign: 'center', display: 'block', height: '100%', boxSizing: 'border-box' }}>
+                  <div className="resource-tile" style={{ '--tile': r.color, width: 64, height: 64, color: r.iconColor, display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 1rem' }}>
                     <span style={{ fontSize: '1.8rem' }}>{r.icon}</span>
                   </div>
                   <h3 style={{ fontSize: '1rem', marginBottom: '0.5rem' }}>{r.title}</h3>
                   <p style={{ fontSize: '0.83rem', color: 'var(--text-muted)', marginBottom: '0.8rem' }}>{r.desc}</p>
                   <span className="badge badge-green">{r.count}</span>
-                  <div style={{ marginTop: '1rem', color: 'var(--green-primary)', fontSize: '0.82rem', fontWeight: 600 }}>View All →</div>
+                  <div style={{ marginTop: '1rem', color: 'var(--link)', fontSize: '0.82rem', fontWeight: 600 }}>View All →</div>
                 </a>
               </Reveal>
             ))}

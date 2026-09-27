@@ -76,7 +76,7 @@ export default function Contact() {
               <div style={{ display: 'flex', gap: '0.8rem', flexWrap: 'wrap' }}>
                 <a href={settings.facebook || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#1877f2', color: 'white' }}>Facebook</a>
                 <a href={settings.instagram || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: 'linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888)', color: 'white' }}>Instagram</a>
-                <a href={settings.twitter || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#000', color: 'white' }}>X / Twitter</a>
+                <a href={settings.twitter || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#000', color: 'white', borderColor: 'rgba(255,255,255,0.25)' }}>X / Twitter</a>
                 <a href={settings.snapchat || '#'} target="_blank" rel="noopener" className="btn btn-sm" style={{ background: '#FFFC00', color: 'black' }}>Snapchat</a>
               </div>
 

@@ -62,7 +62,7 @@ export default function Events() {
 
           {upcoming.length > 0 && (
             <>
-              <h3 style={{ marginBottom: '1.5rem', color: 'var(--green-deep)' }}>Upcoming Events</h3>
+              <h3 style={{ marginBottom: '1.5rem', color: 'var(--heading)' }}>Upcoming Events</h3>
               <div className="grid-3" style={{ marginBottom: '4rem' }}>
                 {upcoming.map((ev, i) => <EventCard key={ev._id} event={ev} i={i} />)}
               </div>
@@ -70,7 +70,7 @@ export default function Events() {
           )}
           {past.length > 0 && (
             <>
-              <h3 style={{ marginBottom: '1.5rem', color: 'var(--green-deep)' }}>Past Events</h3>
+              <h3 style={{ marginBottom: '1.5rem', color: 'var(--heading)' }}>Past Events</h3>
               <div className="grid-3">
                 {past.map((ev, i) => <EventCard key={ev._id} event={ev} i={i} />)}
               </div>
